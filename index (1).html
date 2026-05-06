@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pivot Customer Journey</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#F7F8FA;color:#1A1A1A;padding:24px 16px;min-height:100vh}
+.header{max-width:1100px;margin:0 auto 24px;display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:12px}
+.header h1{font-size:20px;font-weight:600;color:#283754}
+.header p{font-size:12px;color:#777;margin-top:3px}
+.header .meta{text-align:right;font-size:11px;color:#999}
+.wrap{max-width:1100px;margin:0 auto}
+
+.phase-rail{display:flex;gap:0;margin-bottom:20px;border-radius:10px;overflow:hidden;border:1px solid #DDE1E8;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.pb{flex:1;padding:10px 5px 9px;text-align:center;font-size:10px;font-weight:500;cursor:pointer;background:#F2F4F7;color:#666;border:none;border-right:1px solid #DDE1E8;transition:background .12s,color .12s;line-height:1.35}
+.pb:last-child{border-right:none}
+.pb.on{background:#fff;color:#1A1A1A;box-shadow:inset 0 -3px 0 #B94700;font-weight:600}
+.pb .pn{display:block;font-size:9px;font-weight:400;opacity:.6;margin-bottom:2px;text-transform:uppercase;letter-spacing:.05em}
+.pb.on .pn{opacity:.7}
+.pb .bar{display:block;width:18px;height:3px;border-radius:2px;margin:5px auto 0;opacity:.3}
+.pb.on .bar{opacity:1}
+
+.pp{display:none}.pp.on{display:block}
+
+.phdr{display:flex;align-items:flex-start;gap:13px;padding:13px 16px;border-radius:10px;border:1px solid #DDE1E8;margin-bottom:14px;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.pbadge{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;flex-shrink:0}
+.phdr h2{font-size:15px;font-weight:600;margin-bottom:4px;color:#1A1A1A}
+.phdr p{font-size:12px;color:#555;line-height:1.55}
+
+.srail{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+.sb{padding:7px 16px;font-size:11px;font-weight:500;cursor:pointer;background:#fff;color:#444;border:1.5px solid #B0BBC8;border-radius:6px;white-space:nowrap;transition:background .12s,border-color .12s,color .12s,box-shadow .12s;box-shadow:0 1px 3px rgba(0,0,0,.08)}.sb:hover{background:#F0F4F8;border-color:#283754;color:#283754;box-shadow:0 2px 6px rgba(40,55,84,.14)}
+
+.sb.on{background:#283754;color:#fff;border-color:#283754;border-radius:6px;box-shadow:0 2px 8px rgba(40,55,84,.25)}
+.sp{display:none}.sp.on{display:block}
+
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:10px}
+.g4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px;margin-bottom:10px}
+.g1{margin-bottom:10px}
+
+.card{background:#fff;border:1px solid #DDE1E8;border-radius:10px;padding:12px 14px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+.card h3{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:#999;margin-bottom:8px}
+.card ul{list-style:none;display:flex;flex-direction:column;gap:6px}
+.card li{font-size:12px;color:#444;line-height:1.45;padding-left:12px;position:relative}
+.card li::before{content:'';position:absolute;left:0;top:7px;width:4px;height:4px;border-radius:50%;background:#CCC}
+
+.card.info{background:#EDF4FF;border-color:#B8D4F8}
+.card.info h3{color:#1D5FAA}.card.info li{color:#1D5FAA}.card.info li::before{background:#1D5FAA;opacity:.5}
+.card.ok{background:#EDFAF3;border-color:#8ED8B4}
+.card.ok h3{color:#0F6E45}.card.ok li{color:#0F6E45}.card.ok li::before{background:#0F6E45;opacity:.5}
+.card.warn{background:#FFF8E6;border-color:#F0D080}
+.card.warn h3{color:#8A5E00}.card.warn li{color:#8A5E00}.card.warn li::before{background:#8A5E00;opacity:.5}
+.card.purple{background:#F3F0FF;border-color:#C4B8F5}
+.card.purple h3{color:#4B35A8}.card.purple li{color:#4B35A8}.card.purple li::before{background:#4B35A8;opacity:.5}
+.card.orange{background:#FDF0E8;border-color:#E8BFA0}
+.card.orange h3{color:#8B3600}.card.orange li{color:#8B3600}.card.orange li::before{background:#8B3600;opacity:.5}
+
+.flow{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.fc{font-size:11px;font-weight:400;padding:3px 9px;border-radius:4px;background:#EEF1F5;border:none;color:#555;white-space:nowrap}
+.fc.ok{background:#EDFAF3;border-color:#8ED8B4;color:#0F6E45}
+.fc.inst{background:#FDF0E8;border-color:#E8BFA0;color:#8B3600}
+.fc.purple{background:#F3F0FF;border-color:#C4B8F5;color:#4B35A8}
+.fa{font-size:12px;color:#BBB}
+
+.gate{display:flex;align-items:flex-start;gap:9px;padding:9px 13px;border-radius:8px;background:#FFF8E6;border:1px solid #F0D080;margin-bottom:10px}
+.gate-dot{width:8px;height:8px;border-radius:50%;background:#B07A00;flex-shrink:0;margin-top:3px}
+.gate p{font-size:12px;color:#7A5500;line-height:1.5}
+.gate strong{font-weight:600}
+
+.callout{display:flex;align-items:flex-start;gap:9px;padding:10px 14px;border-radius:8px;background:#F3F0FF;border:1px solid #C4B8F5;margin-bottom:10px}
+.callout-dot{width:8px;height:8px;border-radius:50%;background:#4B35A8;flex-shrink:0;margin-top:4px}
+.callout p{font-size:12px;color:#4B35A8;line-height:1.5}
+.callout strong{font-weight:600}
+
+.sys{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px}
+.sc{font-size:10px;padding:3px 8px;border-radius:3px;background:#E8EDF2;border:none;color:#546070;font-weight:500;letter-spacing:.01em}
+
+.tier-pill{display:inline-block;font-size:9px;font-weight:600;padding:2px 7px;border-radius:3px;margin-left:4px;vertical-align:middle}
+.pill-all{background:#EEF1F5;color:#283754;border:1px solid #C5CDD9}
+.pill-pp{background:#EBF2F2;color:#2D5C5B;border:1px solid #A8C8C7}
+.pill-inst{background:#FDF0E8;color:#8B3600;border:1px solid #E8BFA0}
+
+.mat-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:10px}
+.fork{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.fork-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;padding:6px 0 9px;color:#999}
+
+@media(max-width:700px){
+  .g2,.g3,.g4,.mat-row,.fork{grid-template-columns:1fr}
+  .phase-rail{flex-wrap:wrap}
+  .pb{flex:1 1 calc(50% - 1px);border-bottom:1px solid #DDE1E8}
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <h1>Pivot Customer Journey</h1>
+    <p>Operational Customer Journey Map — From Quote to Ongoing Administration</p>
+  </div>
+  <div class="meta">Internal reference · Confidential<br>Version 8 · May 2025</div>
+</div>
+
+<div class="wrap">
+
+<div class="phase-rail">
+  <button class="pb on" onclick="ph(0)"><span class="pn">Phase 1</span>Quote & Payment<span class="bar" style="background:#378ADD"></span></button>
+  <button class="pb" onclick="ph(1)"><span class="pn">Phase 2</span>Access & Enrollment<span class="bar" style="background:#1D9E75"></span></button>
+  <button class="pb" onclick="ph(2)"><span class="pn">Phase 3</span>Scheduling<span class="bar" style="background:#BA7517"></span></button>
+  <button class="pb" onclick="ph(3)"><span class="pn">Phase 4</span>Learning Experience<span class="bar" style="background:#7F77DD"></span></button>
+  <button class="pb" onclick="ph(4)"><span class="pn">Phase 5</span>Certification & Recert<span class="bar" style="background:#D85A30"></span></button>
+  <button class="pb" onclick="ph(5)"><span class="pn">Phase 6</span>Policies &amp; Admin<span class="bar" style="background:#888780"></span></button>
+</div>
+
+<!-- PHASE 1 -->
+<div class="pp on" id="ph0">
+  <div class="phdr"><div class="pbadge" style="background:#E6F1FB;color:#185FA5">01</div><div><h2>Quote & payment</h2><p>Customer contacts Pivot to request a quote. A rep builds it in HubSpot and sends a payment request. Customer pays by credit card, ACH, or PO/invoice. Learning access is not blocked by payment status — but scheduler access is gated until payment is confirmed.</p></div></div>
+  <span style="display:block;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:#999;margin-bottom:8px">Select a section:</span><div class="srail"><button class="sb on" onclick="st(0,0)">Request a quote</button><button class="sb" onclick="st(0,1)">Credit card / ACH</button><button class="sb" onclick="st(0,2)">PO / invoice</button><button class="sb" onclick="st(0,3)">Payment confirmation</button></div>
+  <div class="sp on" id="p0s0">
+    <div class="flow"><span class="fc">Customer contacts Pivot</span><span class="fa">→</span><span class="fc">Rep reviews seat needs</span><span class="fa">→</span><span class="fc">Quote built in HubSpot</span><span class="fa">→</span><span class="fc">Quote sent to customer</span></div>
+    <div class="g2">
+      <div class="card"><h3>What the customer does</h3><ul><li>Reaches out to Pivot (email, web form, or existing contact)</li><li>Provides org name, number of staff, and desired certification tier(s)</li><li>Indicates payment method preference (CC, ACH, or PO)</li><li>Reviews quote and confirms</li></ul></div>
+      <div class="card"><h3>What Pivot does</h3><ul><li>Rep creates or locates the Company record in HubSpot</li><li>Confirms seat counts and license mix (Associate / Practitioner / Instructor)</li><li>Applies correct volume tier pricing automatically</li><li>Generates quote and sends via HubSpot</li></ul></div>
+    </div>
+    <div class="sys"><span class="sc">HubSpot — quote generation</span><span class="sc">HubSpot — company record</span></div>
+    <div class="card info g1"><h3>What lives in HubSpot at this point</h3><ul><li>Company record created or updated</li><li>Subscription type, seat count, and license mix recorded</li><li>Quote attached to the deal</li><li>Payment method preference noted</li></ul></div>
+  </div>
+  <div class="sp" id="p0s1">
+    <div class="flow"><span class="fc">Customer receives payment link</span><span class="fa">→</span><span class="fc">Pays via Authorize.net</span><span class="fa">→</span><span class="fc">Payment status → HubSpot</span><span class="fa">→</span><span class="fc">QuickBooks sync</span></div>
+    <div class="g2">
+      <div class="card"><h3>What the customer does</h3><ul><li>Receives payment link generated from HubSpot</li><li>Completes credit card or ACH payment via Authorize.net</li><li>Receives payment confirmation automatically</li></ul></div>
+      <div class="card"><h3>What happens in the system</h3><ul><li>Authorize.net processes the transaction</li><li>Payment confirmed status pushed back to HubSpot</li><li>HubSpot syncs invoice and payment record to QuickBooks (one-way)</li><li>Subscription active flag set — triggers learning access</li><li>Payment confirmed flag set — unlocks scheduler access for Practitioner and Instructor tiers</li></ul></div>
+    </div>
+    <div class="sys"><span class="sc">HubSpot — payment link + invoice</span><span class="sc">Authorize.net — CC/ACH processing</span><span class="sc">QuickBooks — accounting record</span></div>
+    <div class="card ok g1"><h3>Access unlocked after CC/ACH payment</h3><ul><li>Subscription active = learning access on</li><li>Payment confirmed = scheduler access on (Practitioner and Instructor tiers)</li><li>Both flags set in HubSpot simultaneously</li></ul></div>
+  </div>
+  <div class="sp" id="p0s2">
+    <div class="flow"><span class="fc">Customer submits PO</span><span class="fa">→</span><span class="fc">Rep records in HubSpot</span><span class="fa">→</span><span class="fc">Invoice generated</span><span class="fa">→</span><span class="fc">PO payment confirmed via HubSpot workflow</span></div>
+    <div class="g2">
+      <div class="card"><h3>What the customer does</h3><ul><li>Submits purchase order via their procurement process</li><li>Provides PO number and billing contact to Pivot rep</li><li>Receives HubSpot-generated invoice against the PO</li><li>Remits payment by check or ACH per invoice terms</li></ul></div>
+      <div class="card"><h3>What Pivot does</h3><ul><li>Rep records PO number in HubSpot deal record</li><li>HubSpot generates and sends invoice — syncs to QuickBooks</li><li>HubSpot workflow automatically marks payment confirmed when payment is received and reconciled</li><li>Overdue accounts: automated lockout triggered by HubSpot workflow per defined thresholds</li></ul></div>
+    </div>
+    <div class="sys"><span class="sc">HubSpot — PO + invoice workflow</span><span class="sc">QuickBooks — accounting</span></div>
+    <div class="gate g1"><div class="gate-dot"></div><p><strong>Access note:</strong> Subscription active = learning access on immediately for PO customers. Scheduler access for institutional admin(s) is unlocked automatically once payment is confirmed via HubSpot workflow. No partial payments. Refunds supported.</p></div>
+  </div>
+  <div class="sp" id="p0s3">
+    <div class="g2">
+      <div class="card ok"><h3>Subscription active flag (HubSpot)</h3><ul><li>Set when subscription start date is entered by rep</li><li>Drives: Admin access to Catalog seat management</li><li>Drives: Learner enrollment and Canvas Career access</li><li>Active as long as subscription is current</li><li>Does NOT require payment confirmation to be set</li></ul></div>
+      <div class="card warn"><h3>Payment confirmed flag (HubSpot)</h3><ul><li>Set automatically when CC/ACH payment clears via Authorize.net</li><li>Set automatically via HubSpot workflow when PO/invoice payment is received and reconciled</li><li>Drives: Scheduler access for institutional admin(s) with Instructor subscriptions</li><li>Overdue accounts: automated lockout triggered by HubSpot workflow per defined thresholds</li><li>This is the only payment gate in the system</li></ul></div>
+    </div>
+    <div class="card info g1"><h3>Key principle</h3><ul><li>Learning access is NOT tied to payment status — only to subscription being active</li><li>Scheduler access IS tied to payment confirmation — available to institutional admin(s) with Instructor subscriptions; automated once payment confirmed flag is set</li><li>A PO customer can start learning immediately — they just can't schedule the live training until payment clears</li></ul></div>
+  </div>
+</div>
+
+<!-- PHASE 2 -->
+<div class="pp" id="ph1">
+  <div class="phdr"><div class="pbadge" style="background:#E1F5EE;color:#0F6E56">02</div><div><h2>Access & enrollment</h2><p>Once payment is confirmed and the subscription is active, a CSM kickoff call is scheduled and the training agreement is signed. The institutional admin(s) then gain access to Catalog for seat management. Assigning a seat in Catalog immediately grants that learner access to their Canvas Career curriculum — no additional step required.</p></div></div>
+  <span style="display:block;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:#999;margin-bottom:8px">Select a section:</span><div class="srail"><button class="sb on" onclick="st(1,0)">CSM kickoff</button><button class="sb" onclick="st(1,1)">Admin setup</button><button class="sb" onclick="st(1,2)">Seat management</button><button class="sb" onclick="st(1,3)">Learner enrollment</button><button class="sb" onclick="st(1,4)">Canvas access</button></div>
+  <div class="sp on" id="p1s0">
+    <div class="flow"><span class="fc">Payment confirmed</span><span class="fa">→</span><span class="fc">Training agreement signed</span><span class="fa">→</span><span class="fc">CSM kickoff call scheduled</span><span class="fa">→</span><span class="fc">Institutional admin(s) onboarded</span></div>
+    <div class="g2">
+      <div class="card ok"><h3>Training agreement</h3><ul><li>Institutional admin(s) review and sign the Pivot training agreement before access is provisioned</li><li>Agreement covers: scope of certification, permitted use of materials, compliance obligations, and recertification requirements</li><li>Signed agreement recorded in HubSpot on the Company record</li><li>Access to Catalog and Canvas is provisioned after agreement is signed</li></ul></div>
+      <div class="card ok"><h3>CSM kickoff call</h3><ul><li>CSM schedules a kickoff call with the institutional admin(s) after agreement is signed</li><li>Kickoff covers: platform walkthrough, seat assignment process, skills lab scheduling overview, and key contacts</li><li>CSM confirms the admin understands their responsibilities before the cohort is launched</li><li>Any Instructor-tier subscribers are briefed on the Host a Training / Join a Training paths and training agreement for hosting</li></ul></div>
+    </div>
+    <div class="sys"><span class="sc">HubSpot — training agreement on Company record</span><span class="sc">HubSpot — CSM assignment</span></div>
+  </div>
+  <div class="sp" id="p1s1">
+    <div class="flow"><span class="fc">Subscription active in HubSpot</span><span class="fa">→</span><span class="fc">Admin designated in HubSpot</span><span class="fa">→</span><span class="fc">Admin access to Catalog granted</span></div>
+    <div class="g2">
+      <div class="card"><h3>How admin access works</h3><ul><li>Rep designates the institutional admin(s) in HubSpot</li><li>Subscription active flag triggers admin access to Catalog</li><li>Admin receives credentials to log into Catalog</li><li>Institutional admin(s) see their organization's seat pool and user roster</li></ul></div>
+      <div class="card"><h3>What admin can see in Catalog</h3><ul><li>Total seats purchased by license type (Associate / Practitioner / Instructor)</li><li>Seats assigned vs seats remaining</li><li>Staff roster and assignment status</li><li>Reallocation allowance remaining (up to 20% of total licenses per year)</li></ul></div>
+    </div>
+    <div class="sys"><span class="sc">HubSpot — subscription active flag</span><span class="sc">HubSpot — admin designation</span><span class="sc">Catalog — admin portal</span></div>
+  </div>
+  <div class="sp" id="p1s2">
+    <div class="flow"><span class="fc">Admin logs into Catalog</span><span class="fa">→</span><span class="fc">Assigns seat to staff member</span><span class="fa">→</span><span class="fc">Canvas access granted immediately</span><span class="fa">→</span><span class="fc">Enrollment recorded in HubSpot</span></div>
+    <div class="g2">
+      <div class="card"><h3>Seat assignment process</h3><ul><li>Admin enters staff name and email in Catalog</li><li>Admin selects the appropriate license type for each person</li><li>Seat assignment recorded in Catalog and synced to HubSpot</li><li>Assigning the seat <strong style="color:#0F6E45">immediately grants the learner access</strong> to their Canvas Career curriculum</li></ul></div>
+      <div class="card warn"><h3>Seat reallocation policy</h3><ul><li>Customers may reallocate up to <strong>20% of their total licenses</strong> per subscription year to accommodate staff turnover</li><li>Example: 50-seat subscription allows up to 10 seat reallocations per year</li><li>Reallocation releases the seat from the original learner and assigns it to a new one</li><li>Original learner's enrollment and progress are ended at point of reallocation</li><li>Reallocation beyond 20% requires a conversation with the Pivot rep</li></ul></div>
+    </div>
+    <div class="sys"><span class="sc">Catalog — seat management UI</span><span class="sc">HubSpot — seat allocations + reallocation tracking</span><span class="sc">Canvas Career — immediate access on assignment</span></div>
+  </div>
+  <div class="sp" id="p1s3">
+    <div class="flow"><span class="fc">Seat assigned in Catalog</span><span class="fa">→</span><span class="fc">API call to Canvas Career</span><span class="fa">→</span><span class="fc">User created + enrolled in Catalog program</span><span class="fa">→</span><span class="fc">Canvas access live immediately</span></div>
+    <div class="g2">
+      <div class="card ok"><h3>Immediate access on seat assignment</h3><ul><li>Seat assignment in Catalog triggers an API call to Canvas Career in real time</li><li>Learner enrolled in the correct Catalog program for their license tier immediately</li><li>Learner receives a welcome email with Canvas access instructions</li><li>No delay — the seat assignment IS the access grant</li></ul></div>
+      <div class="card"><h3>What gets created in HubSpot</h3><ul><li>Certification enrollment record linked to the learner contact</li><li>Enrollment date, license type, and assigned institution recorded</li><li>Certification status set to "In Progress"</li><li>Completion data pushed from Badgr Pro to HubSpot automatically on credential award</li></ul></div>
+    </div>
+    <div class="sys"><span class="sc">Catalog — program enrollment trigger</span><span class="sc">Canvas Career — user creation + course access</span><span class="sc">HubSpot — enrollment record</span></div>
+  </div>
+  <div class="sp" id="p1s4">
+    <div class="g2">
+      <div class="card"><h3>Learner Canvas experience</h3><ul><li>Learner receives Canvas access at the moment the admin assigns their seat</li><li>Dashboard shows the course track(s) for their license tier</li><li>Self-paced — no time limit within the subscription year</li><li>Completion data flows to Catalog → Badgr Pro → HubSpot</li></ul></div>
+      <div class="card"><h3>Courses assigned by tier</h3><ul><li>Associate: PCM Foundations (online only — no skills lab)</li><li>Practitioner: PCM Foundations + Physical Interventions</li><li>Instructor: PCM Foundations + Physical Interventions + Instructor Standards + QA (post-skills lab)</li></ul></div>
+    </div>
+    <div class="card info g1"><h3>Access rule reminder</h3><ul><li>Canvas access is gated by subscription active status — not payment confirmation</li><li>PO/invoice customers can begin online learning immediately once the rep sets the subscription active flag and the admin assigns seats</li></ul></div>
+  </div>
+</div>
+
+<!-- PHASE 3 -->
+<div class="pp" id="ph2">
+  <div class="phdr"><div class="pbadge" style="background:#FAEEDA;color:#633806">03</div><div><h2>Scheduling the skills lab</h2><p>After payment is confirmed, institutional admin(s) with an Instructor subscription gain access to the scheduling tool. Associates and Practitioners do not perform any scheduling — their participation is arranged by the institutional admin(s). Two paths: host a training at your own location, or join an existing nearby training.</p></div></div>
+  <span style="display:block;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:#999;margin-bottom:8px">Select a section:</span><div class="srail"><button class="sb on" onclick="st(2,0)">Scheduler access</button><button class="sb" onclick="st(2,1)">Path A: Host a training</button><button class="sb" onclick="st(2,2)">Path B: Join a training</button><button class="sb" onclick="st(2,3)">Training event model</button><button class="sb" onclick="st(2,4)">Materials</button></div>
+  <div class="sp on" id="p2s0">
+    <div class="gate"><div class="gate-dot"></div><p><strong>Access gate:</strong> Scheduling is only accessible to institutional admin(s) with an Instructor tier in their subscription. Associates and Practitioners do not perform any scheduling activities — their participation in the skills lab is arranged by the institutional admin(s) on their behalf.</p></div>
+    <div class="g2">
+      <div class="card"><h3>What triggers scheduler access</h3><ul><li>For CC / ACH: Authorize.net confirms payment → HubSpot automatically sets payment confirmed flag</li><li>For PO / invoice: HubSpot workflow triggers payment confirmed flag automatically on receipt of payment</li><li>Account lockout for overdue accounts is automated — access suspended when payment is overdue per defined thresholds</li><li>Once payment confirmed flag is set, institutional admin(s) can access the scheduling tool</li></ul></div>
+      <div class="card"><h3>Two scheduling paths available</h3><ul><li>Path A — Host a Training: Institutional admin(s) provide the venue, choose a 3-day window, and optionally open the event to nearby orgs</li><li>Path B — Join a Training: Institutional admin(s) browse already-scheduled nearby trainings and register their staff into available seats</li><li>Both paths use the same Training Event object in HubSpot</li><li>Associates and Practitioners are registered by the institutional admin(s) — they do not access the scheduler directly</li></ul></div>
+    </div>
+  </div>
+  <div class="sp" id="p2s1">
+    <div class="flow"><span class="fc">Admin selects "Host a Training"</span><span class="fa">→</span><span class="fc">Chooses 3-day window</span><span class="fa">→</span><span class="fc">Trainer availability checked</span><span class="fa">→</span><span class="fc">Event created in HubSpot</span><span class="fa">→</span><span class="fc">Synced to Google Calendar</span><span class="fa">→</span><span class="fc">Opened to nearby orgs</span></div>
+    <div class="g2">
+      <div class="card"><h3>What the institutional admin(s) do</h3><ul><li>Accesses scheduling tool (payment confirmed gate cleared)</li><li>Signs the hosting training agreement before the event is confirmed</li><li>Selects "Host a Training" and provides venue details</li><li>Views calendar showing valid trainer availability windows</li><li>Selects preferred 3-day window from available options</li><li>Registers all attendees (Associates, Practitioners, and Instructors) into the event in HubSpot — Catalog is not used for event scheduling</li><li>Can request the event be marked private if at least 10 people are registered — private events are not visible to nearby institutions</li></ul></div>
+      <div class="card"><h3>What happens in the system</h3><ul><li>Custom API validates trainer availability against Google Calendar</li><li>Training Event object created in HubSpot with all details</li><li>Event synced to Google Calendar for the assigned trainer</li><li>Event marked as "Open / Shared" by default — or "Private" if requested and 10+ registrants are confirmed</li><li>Capacity tracked in HubSpot — no Catalog involvement in event scheduling</li></ul></div>
+    </div>
+    <div class="sys"><span class="sc">HubSpot — Training Event object</span><span class="sc">Google Calendar — trainer scheduling</span><span class="sc">Custom API — availability validation</span></div>
+  </div>
+  <div class="sp" id="p2s2">
+    <div class="flow"><span class="fc">Admin selects "Join a Training"</span><span class="fa">→</span><span class="fc">Browses nearby events</span><span class="fa">→</span><span class="fc">Selects event</span><span class="fa">→</span><span class="fc">Assigns staff to seats</span><span class="fa">→</span><span class="fc">Recorded in HubSpot</span></div>
+    <div class="g2">
+      <div class="card"><h3>What the institutional admin(s) do</h3><ul><li>Accesses scheduling tool (payment confirmed gate cleared)</li><li>Browses calendar or list of open nearby training events (private events are not visible)</li><li>Filters by geography and available dates</li><li>Registers all attending staff (Associates, Practitioners, and Instructors) into the event in HubSpot</li></ul></div>
+      <div class="card"><h3>What happens in the system</h3><ul><li>Seat assignments recorded in HubSpot and tied to the specific Training Event</li><li>Institution added to the participating institutions list on the event</li><li>Available seat count decremented</li><li>Learners linked to the event in HubSpot for completion tracking</li></ul></div>
+    </div>
+    <div class="sys"><span class="sc">HubSpot — Training Event object + attendee registration</span></div>
+  </div>
+  <div class="sp" id="p2s3">
+    <div class="g2">
+      <div class="card info"><h3>Training Event object (HubSpot)</h3><ul><li>Event type: Hosted or Open/Shared or Private (if 10+ registered and privacy requested)</li><li>Host institution and location</li><li>Hosting training agreement signed — recorded on event</li><li>Assigned trainer — 3-day training window</li><li>Total capacity and registered attendees</li><li>Participating institutions</li><li>Nearby/open or private availability status</li><li>Event status (Scheduled / In Progress / Complete)</li></ul></div>
+      <div class="card"><h3>System roles</h3><ul><li>HubSpot: source of truth for all event records, seat assignments, and status</li><li>Google Calendar: trainer availability engine and calendar execution</li><li>Custom APIs: validate availability, create events, sync between HubSpot and Google Calendar</li><li>Catalog: seat management — not event scheduling</li></ul></div>
+    </div>
+  </div>
+  <div class="sp" id="p2s4">
+    <div class="mat-row">
+      <div class="card warn"><h3>Training mats — institution responsibility</h3><ul><li>Institutions hosting a training must purchase their own training mats before the event</li><li>Pivot provides a list of preferred vendors — institutions source and purchase independently</li><li>Mats are not provided or shipped by Pivot</li><li>Confirm mat requirements with Pivot rep when scheduling</li></ul></div>
+      <div class="card info"><h3>Curriculum manual — Instructors</h3><ul><li>Each Instructor receives a physical copy and a digital copy of the Pivot curriculum manual</li><li>Physical copy is shipped to the onsite training location and distributed to Instructors during the skills lab</li><li>Physical manuals are also available for purchase for those who need additional or replacement copies</li><li>Digital copy accessible within Canvas Career at any time</li><li>Associates and Practitioners receive digital access in Canvas only — no physical manual</li><li>Manual is licensed to the individual — not to be copied or distributed</li></ul></div>
+      <div class="card ok"><h3>All other materials — Canvas + print</h3><ul><li>All supporting materials made available within Canvas Career</li><li>Accessible at any time during the active subscription year</li><li>Materials can be downloaded and printed if desired</li><li>Digital access covers all tiers: Associate, Practitioner, and Instructor</li></ul></div>
+    </div>
+    <div class="card g1"><h3>Materials summary by tier</h3><ul><li><strong>Associate:</strong> Digital materials in Canvas (printable)</li><li><strong>Practitioner:</strong> Digital materials in Canvas (printable)</li><li><strong>Instructor:</strong> Physical curriculum manual (shipped to onsite training location, distributed at skills lab; also available for purchase) + digital manual in Canvas + all other digital materials in Canvas (printable)</li><li><strong>Hosting institution:</strong> Must procure training mats from Pivot-preferred vendors</li></ul></div>
+  </div>
+</div>
+
+<!-- PHASE 4 -->
+<div class="pp" id="ph3">
+  <div class="phdr"><div class="pbadge" style="background:#EEEDFE;color:#3C3489">04</div><div><h2>Learning experience</h2><p>Learners complete their assigned Catalog program in Canvas. Badgr Pro awards the certificate and badge automatically when all Catalog program requirements are met — no manual step. Data pushes to HubSpot. Associates certify online only. Practitioners and Instructors also attend a skills lab.</p></div></div>
+  <span style="display:block;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:#999;margin-bottom:8px">Select a section:</span><div class="srail"><button class="sb on" onclick="st(3,0)">Canvas curriculum</button><button class="sb" onclick="st(3,1)">Course structure</button><button class="sb" onclick="st(3,2)">Tier requirements</button><button class="sb" onclick="st(3,3)">Skills lab</button><button class="sb" onclick="st(3,4)">Certificate & badge</button></div>
+  <div class="sp on" id="p3s0">
+    <div class="flow"><span class="fc">Seat assigned → enrolled in Catalog program</span><span class="fa">→</span><span class="fc">Completes Canvas curriculum</span><span class="fa">→</span><span class="fc ok">All program requirements met → Badgr Pro awards credential automatically</span></div>
+    <div class="g2">
+      <div class="card"><h3>Learner experience in Canvas</h3><ul><li>Learner receives Canvas access at the moment the admin assigns their seat</li><li>Dashboard shows the course track(s) for their Catalog program</li><li>Self-paced — no time limit within the subscription year</li><li>Assessments are embedded within the foundational modules</li><li>Progress saved automatically and tracked</li></ul></div>
+      <div class="card ok"><h3>How certification is triggered</h3><ul><li>Badgr Pro awards the credential automatically when all Catalog program requirements are met</li><li>No manual trigger or admin action required</li><li>Associate: program complete when Foundations course is done</li><li>Practitioner: program complete when online curriculum + gradebook pass are recorded</li><li>Instructor: program complete when online curriculum + gradebook pass + QA course are done</li><li>Credential award data pushed automatically from Badgr Pro to HubSpot</li></ul></div>
+    </div>
+    <div class="sys"><span class="sc">Canvas Career — curriculum delivery</span><span class="sc">Catalog — program requirements tracking</span><span class="sc">Badgr Pro — automatic credential award</span><span class="sc">HubSpot — record via Badgr Pro push</span></div>
+  </div>
+  <div class="sp" id="p3s1">
+    <div class="g4">
+      <div class="card info"><h3>PCM Foundations</h3><p style="font-size:11px;color:#1D5FAA;margin-bottom:8px">Required for all. Assessments embedded.</p><div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px"><span class="tier-pill pill-all">Associate</span><span class="tier-pill pill-pp">Practitioner</span><span class="tier-pill pill-inst">Instructor</span></div><ul><li>PCM definition of crisis and behavior framework</li><li>Cycle of crisis and prevention strategies</li><li>De-escalation and non-physical interactions</li><li>Reintegration principles</li></ul></div>
+      <div class="card"><h3>Physical Interventions</h3><p style="font-size:11px;color:#666;margin-bottom:8px">Practitioners and Instructors only</p><div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px"><span class="tier-pill pill-pp">Practitioner</span><span class="tier-pill pill-inst">Instructor</span></div><ul><li>Physical safety techniques</li><li>Transportation and immobilization procedures</li><li>Vertical and horizontal holding protocols</li><li>Criteria for use of physical intervention</li></ul></div>
+      <div class="card"><h3>Instructor Standards</h3><p style="font-size:11px;color:#666;margin-bottom:8px">Instructors only — before skills lab</p><div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px"><span class="tier-pill pill-inst">Instructor</span></div><ul><li>Course delivery standards and sequence</li><li>Classroom size limitations</li><li>Use of surrogates in small classes</li><li>Documentation and submission procedures</li></ul></div>
+      <div class="card"><h3>QA</h3><p style="font-size:11px;color:#666;margin-bottom:8px">Instructors only — unlocked after skills lab pass</p><div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px"><span class="tier-pill pill-inst">Instructor</span></div><ul><li>Unlocked when Instructor marks skills lab passed in gradebook</li><li>QA standards for instruction</li><li>Certification validity and revocation criteria</li><li>Recordkeeping and compliance obligations</li></ul></div>
+    </div>
+    <div class="card info g1"><h3>Sequence by tier</h3><ul><li><strong>Associate:</strong> PCM Foundations → all program requirements met → Badgr Pro credential awarded automatically</li><li><strong>Practitioner:</strong> Foundations + Physical Interventions → skills lab → gradebook pass → all requirements met → Badgr Pro credential awarded automatically</li><li><strong>Instructor:</strong> Foundations + Physical Interventions + Instructor Standards → skills lab → gradebook pass → QA unlocked → QA complete → all requirements met → Badgr Pro credential awarded automatically</li></ul></div>
+  </div>
+  <div class="sp" id="p3s2">
+    <div class="g3">
+      <div class="card"><h3>Associate — online only</h3><ul><li>Complete PCM Foundations in Canvas</li><li>Assessments embedded in modules — no separate step</li><li>No skills lab required</li><li>All Catalog program requirements met on course completion</li><li>Badgr Pro credential awarded automatically</li><li>Admin notified of credential issuance</li><li>HubSpot record updated via Badgr Pro data push</li></ul></div>
+      <div class="card"><h3>Practitioner — online + skills lab</h3><ul><li>Complete PCM Foundations + Physical Interventions in Canvas</li><li>Attend skills lab — extended practical component</li><li>Instructor marks gradebook in Canvas — skills lab passed</li><li>All Catalog program requirements met</li><li>Badgr Pro credential awarded automatically</li><li>Admin notified of credential issuance</li><li>HubSpot record updated via Badgr Pro data push</li></ul></div>
+      <div class="card"><h3>Instructor — online + skills lab + QA</h3><ul><li>Complete Foundations + Physical Interventions + Instructor Standards in Canvas</li><li>Attend skills lab — assessed facilitation delivery</li><li>Instructor marks gradebook — QA course unlocked</li><li>Complete QA course in Canvas</li><li>All Catalog program requirements met</li><li>Badgr Pro credential awarded automatically</li><li>Admin notified; HubSpot updated via Badgr Pro data push</li></ul></div>
+    </div>
+    <div class="card info g1"><h3>Key principle — Catalog program requirements</h3><ul><li>Badgr Pro awards the credential automatically when all requirements in the Catalog program are satisfied — no manual step</li><li>Admin is notified each time a credential is issued for a learner in their institution</li><li>Associates are online only — no scheduling, no skills lab, no gradebook entry</li></ul></div>
+  </div>
+  <div class="sp" id="p3s3">
+    <div class="g2">
+      <div class="card"><h3>Before the skills lab</h3><ul><li>Instructor confirms Practitioners and Instructors have completed their full online course track</li><li>Host institution confirms training mats are on-site (institution-procured from preferred vendors)</li><li>Roster finalized in HubSpot — all attendees linked to the Training Event</li><li>Instructor reviews participant tier mix (Practitioner / Instructor candidate)</li></ul></div>
+      <div class="card"><h3>During the skills lab</h3><ul><li>Instructor works through the skills checklist for each participant</li><li>Checklist is a PDF within the Canvas course — used by the Instructor during the lab</li><li>Each skill area is observed and marked pass / needs development on the PDF</li><li>Instructor candidates demonstrate a facilitation segment per Instructor Standards</li></ul></div>
+    </div>
+    <div class="fork-label">After the skills lab — two paths based on tier</div>
+    <div class="fork">
+      <div class="card ok"><h3>Practitioners</h3><ul><li>Instructor marks learner as passed in the Canvas gradebook</li><li>Gradebook pass satisfies the final Catalog program requirement</li><li>Badgr Pro credential awarded automatically — no additional step</li><li>Admin notified of credential issuance</li><li>HubSpot certification status updated via Badgr Pro data push</li></ul></div>
+      <div class="card orange"><h3>Instructors</h3><ul><li>Instructor marks learner as passed in the Canvas gradebook</li><li>Gradebook pass unlocks the QA course in Canvas</li><li>Learner completes QA course at their own pace</li><li>QA completion satisfies the final Catalog program requirement</li><li>Badgr Pro credential awarded automatically</li><li>Admin notified; HubSpot record updated via Badgr Pro data push</li><li>Physical curriculum manual shipped to the onsite training location — distributed to the Instructor at the skills lab</li></ul></div>
+    </div>
+    <div class="sys"><span class="sc">Canvas Career — gradebook + PDF checklist</span><span class="sc">Catalog — program requirements</span><span class="sc">Badgr Pro — automatic credential award + admin notification</span><span class="sc">HubSpot — record via data push</span></div>
+  </div>
+  <div class="sp" id="p3s4">
+    <div class="callout"><div class="callout-dot"></div><p><strong>Certificate and badge are one credential.</strong> Badgr Pro is used to design and issue the certificate in badge format. The learner receives a single Badgr Pro credential that serves as both their digital badge and their certificate — shareable anywhere, verifiable, and tied to their permanent Badgr profile.</p></div>
+    <div class="g2">
+      <div class="card ok"><h3>The Badgr Pro credential</h3><ul><li>Awarded automatically when all Catalog program requirements are met — no manual step</li><li>Learner receives an email notification to claim their credential from Badgr Pro</li><li>Serves as both the digital badge and the certificate — one credential</li><li>Shareable to LinkedIn, email signature, digital portfolio</li><li>Credential metadata: tier, issuing org (Pivot), learner name, issue date, credential year</li><li>Learner owns their Badgr profile — persists independently of employer</li><li>Verifiable URL for each issued credential</li></ul></div>
+      <div class="card"><h3>Admin notification + HubSpot data push</h3><ul><li>Admin is notified each time a credential is issued for a learner in their institution</li><li>Badgr Pro pushes credential award data to HubSpot automatically</li><li>HubSpot certification record updated: status set to "Certified", credential ID recorded</li><li>No manual data entry required by Pivot staff</li><li>Admin can view all issued credentials for their institution in Looker Studio at any time</li></ul></div>
+    </div>
+    <div class="sys"><span class="sc">Catalog — program completion trigger</span><span class="sc">Badgr Pro — automatic credential award + admin notification</span><span class="sc">HubSpot — record via Badgr Pro push</span></div>
+  </div>
+</div>
+
+<!-- PHASE 5 -->
+<div class="pp" id="ph4">
+  <div class="phdr"><div class="pbadge" style="background:#FAECE7;color:#712B13">05</div><div><h2>Certification record & recertification</h2><p>All certifications are tied to the calendar year — not individual expiration dates. Every learner must recertify once per calendar year regardless of when they originally certified. Recertification is included in the subscription. Learners complete recertification modules in Canvas; Practitioners and Instructors also attend a skills lab. Specialization upgrades are requested here and assessed at the recertification skills lab.</p></div></div>
+  <span style="display:block;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:#999;margin-bottom:8px">Select a section:</span><div class="srail"><button class="sb on" onclick="st(4,0)">Certification record</button><button class="sb" onclick="st(4,1)">Calendar year model</button><button class="sb" onclick="st(4,2)">Recertification process</button><button class="sb" onclick="st(4,3)">What's stored where</button><button class="sb" onclick="st(4,4)">Upgrades & specializations</button></div>
+  <div class="sp on" id="p4s0">
+    <div class="g2">
+      <div class="card info"><h3>HubSpot certification record</h3><ul><li>Certification enrollment linked to the learner Contact record</li><li>Institution (Company) association maintained</li><li>Certification tier: Associate, Practitioner, or Instructor</li><li>Status: In Progress / Certified / Recertification Due / Lapsed</li><li>Credential issue date recorded</li><li>Current certification year tracked</li><li>Training Event linked (Practitioners and Instructors)</li><li>Badgr Pro credential ID referenced</li><li>Any upgrade/specialization history</li></ul></div>
+      <div class="card"><h3>Badgr Pro credential</h3><ul><li>Certificate and badge are one credential — issued automatically by Badgr Pro</li><li>Triggered when all Catalog program requirements are met</li><li>Data pushed to HubSpot automatically on award — no manual entry</li><li>Admin notified automatically on each credential issuance</li><li>On recertification: new credential issued, previous one superseded</li><li>Learner owns their Badgr profile — persists independently of employer</li></ul></div>
+    </div>
+    <div class="sys"><span class="sc">Catalog → Badgr Pro — automatic award</span><span class="sc">Badgr Pro → HubSpot — data push</span><span class="sc">Badgr Pro → Admin — notification</span></div>
+  </div>
+  <div class="sp" id="p4s1">
+    <div class="callout"><div class="callout-dot"></div><p><strong>Important:</strong> Pivot does not use individual certification expiration dates. All learners must recertify once per calendar year — the recertification window is the same for everyone, regardless of when they originally certified.</p></div>
+    <div class="g2">
+      <div class="card ok"><h3>Calendar year recertification model</h3><ul><li>All certifications are valid for the current calendar year</li><li>Every learner must recertify once each calendar year to maintain active status</li><li>No individual expiration dates — the cadence is universal across all learners and institutions</li><li>Recertification is included in the annual subscription — no additional cost</li><li>Simplifies compliance tracking for admins — one deadline, everyone in the institution</li></ul></div>
+      <div class="card"><h3>Admin visibility</h3><ul><li>Looker Studio dashboard shows recertification status for the current calendar year at any time</li><li>Admin can check how many learners have recertified vs outstanding at will — no scheduled report required</li><li>HubSpot tracks current year certification status per learner</li><li>Admin notified automatically when each recertification credential is issued</li></ul></div>
+    </div>
+  </div>
+  <div class="sp" id="p4s2">
+    <div class="flow"><span class="fc">Recertification window opens</span><span class="fa">→</span><span class="fc">Learner completes recert modules in Canvas</span><span class="fa">→</span><span class="fc ok">Associate: credential re-awarded</span><span class="fa">/</span><span class="fc inst">Practitioner + Instructor: skills lab required</span></div>
+    <div class="g3">
+      <div class="card"><h3>Associate recertification</h3><ul><li>Learner completes the annual recertification modules in Canvas</li><li>Modules include updated content from the annual content refresh</li><li>No skills lab required — online only</li><li>All recertification program requirements met on module completion</li><li>Badgr Pro credential re-awarded automatically</li><li>Admin notified of re-issued credential</li><li>HubSpot record updated via Badgr Pro data push</li></ul></div>
+      <div class="card"><h3>Practitioner recertification</h3><ul><li>Learner completes the annual recertification modules in Canvas</li><li>Attends skills lab — Instructor marks gradebook to confirm</li><li>Skills lab can be combined with upgrades if requested (see Upgrades tab)</li><li>All recertification program requirements met</li><li>Badgr Pro credential re-awarded automatically</li><li>Admin notified of re-issued credential</li><li>HubSpot record updated via Badgr Pro data push</li></ul></div>
+      <div class="card"><h3>Instructor recertification</h3><ul><li>Learner completes the annual recertification modules in Canvas</li><li>Attends skills lab — assessed component included</li><li>Skills lab can be combined with upgrade requests (see Upgrades tab)</li><li>All recertification program requirements met</li><li>Badgr Pro credential re-awarded automatically</li><li>Admin notified of re-issued credential</li><li>HubSpot record updated via Badgr Pro data push</li></ul></div>
+    </div>
+    <div class="sys"><span class="sc">Canvas Career — recert modules</span><span class="sc">Catalog — recert program requirements</span><span class="sc">Badgr Pro — automatic re-award + admin notification</span><span class="sc">HubSpot — record update</span></div>
+  </div>
+  <div class="sp" id="p4s3">
+    <div class="g3">
+      <div class="card"><h3>Stored in HubSpot</h3><ul><li>Learner contact + institution</li><li>Certification tier</li><li>Enrollment + completion dates</li><li>Credential issue date</li><li>Current certification year status</li><li>Training Event reference (Practitioners + Instructors)</li><li>Seat allocation record</li><li>Badgr Pro credential ID</li><li>Upgrade/specialization history</li></ul></div>
+      <div class="card"><h3>Stored in Canvas Career</h3><ul><li>Module-level progress per course</li><li>Embedded assessment results</li><li>Gradebook entries (skills lab pass)</li><li>QA completion (Instructors)</li><li>Recertification module completions</li><li>Course version completed</li><li>PDF skills checklist (interim)</li></ul></div>
+      <div class="card"><h3>Stored in Badgr Pro</h3><ul><li>Issued credential (certificate + badge combined)</li><li>Tier and issuing org (Pivot)</li><li>Learner name and issue date</li><li>Verification URL</li><li>Learner's Badgr profile</li><li>Recertification credential history</li></ul></div>
+    </div>
+  </div>
+  <div class="sp" id="p4s4">
+    <div class="callout"><div class="callout-dot"></div><p><strong>Upgrades are included in the subscription.</strong> Learners who want to add a specialization do not pay extra. Upgrades are not available on-demand — they align with the annual recertification cycle and are assessed at the recertification skills lab.</p></div>
+    <div class="g2">
+      <div class="card purple"><h3>What training upgrades are</h3><ul><li>Additional specializations added on top of a learner's current certification tier</li><li>Expand the scope of what a certified learner is authorized to practice or teach</li><li>Included in the subscription — no separate purchase or upgrade fee</li><li>Available to all active certified learners in good standing</li><li>Processed at the annual recertification cycle — not available mid-year on demand</li></ul></div>
+      <div class="card"><h3>How to request an upgrade</h3><ul><li>Admin or learner contacts their Pivot rep to request a specialization upgrade</li><li>Request should be submitted ahead of the scheduled recertification skills lab</li><li>Pivot rep confirms the specialization is available and included in the subscription</li><li>Upgrade is added to the learner's upcoming recertification plan</li><li>Additional online modules for the specialization are assigned in Canvas prior to the skills lab</li></ul></div>
+    </div>
+    <div class="g2">
+      <div class="card"><h3>During the recertification skills lab</h3><ul><li>Learner completes standard recertification requirements as normal</li><li>Upgrade specialization is assessed as an additional component within the same skills lab</li><li>Instructor uses the specialization checklist (PDF in Canvas — same interim process)</li><li>Pass/fail recorded for both standard recertification and the upgrade component separately</li><li>Instructor marks the gradebook in Canvas for both components</li></ul></div>
+      <div class="card purple"><h3>Timing & eligibility</h3><ul><li>Upgrades are not processed mid-year — they align with the annual recertification window</li><li>Learner must hold an active certification in the current year to be eligible</li><li>Cannot upgrade a lapsed certification</li><li>Learner must complete all assigned upgrade modules in Canvas before the skills lab</li><li>Planning ahead ensures the trainer and materials are prepared</li></ul></div>
+    </div>
+    <div class="flow"><span class="fc">Upgrade assessed at skills lab</span><span class="fa">→</span><span class="fc">Gradebook marked for upgrade component</span><span class="fa">→</span><span class="fc">All program requirements met</span><span class="fa">→</span><span class="fc ok">Updated Badgr Pro credential awarded</span><span class="fa">→</span><span class="fc">Admin notified</span><span class="fa">→</span><span class="fc">HubSpot record updated</span></div>
+    <div class="g2">
+      <div class="card ok"><h3>Updated Badgr Pro credential</h3><ul><li>Badgr Pro awards an updated credential automatically when all program requirements are met</li><li>Updated credential reflects the learner's new specialization scope</li><li>Previous credential superseded — new one issued in its place</li><li>Learner and admin notified of the updated credential</li><li>Data pushed to HubSpot automatically — no manual update required</li></ul></div>
+      <div class="card"><h3>HubSpot record after upgrade</h3><ul><li>Specialization added to the learner's certification record in HubSpot</li><li>New Badgr Pro credential ID recorded</li><li>Upgrade history maintained on the learner contact record</li><li>Looker Studio dashboard reflects updated certification scope</li></ul></div>
+    </div>
+    <div class="sys"><span class="sc">HubSpot — upgrade request on learner record</span><span class="sc">Canvas Career — upgrade modules + gradebook</span><span class="sc">Catalog — updated program requirements</span><span class="sc">Badgr Pro — updated credential + admin notification</span><span class="sc">HubSpot — record via Badgr Pro push</span></div>
+  </div>
+</div>
+
+<!-- PHASE 6 — POLICIES & ADMIN (renumbered from ph6 to ph5) -->
+<div class="pp" id="ph5">
+  <div class="phdr"><div class="pbadge" style="background:#F1EFE8;color:#444441">06</div><div><h2>Policies & administration</h2><p>Institutions have on-demand access to their Looker Studio dashboard to view certification status, seat utilization, and learner progress at any time. Admins are notified automatically when credentials are issued. The policies below govern subscriptions, certifications, and admin responsibilities throughout the year.</p></div></div>
+  <span style="display:block;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:#999;margin-bottom:8px">Select a section:</span><div class="srail"><button class="sb on" onclick="st(5,0)">Looker Studio dashboard</button><button class="sb" onclick="st(5,1)">Policies</button></div>
+  <div class="sp on" id="p5s0">
+    <div class="flow"><span class="fc">Institution created in HubSpot</span><span class="fa">→</span><span class="fc">Unique institution ID assigned</span><span class="fa">→</span><span class="fc">Looker Studio dashboard auto-provisioned</span><span class="fa">→</span><span class="fc">Admin receives access</span></div>
+    <div class="g2">
+      <div class="card"><h3>How the dashboard is provisioned</h3><ul><li>When a new institution is created in HubSpot, a unique Company ID is assigned</li><li>This triggers an automation that filters the standard Looker Studio template for that institution</li><li>One standardized template — dynamically filtered per institution ID</li><li>No custom reports built per customer</li><li>Admin receives dashboard access link (shared link or email-based access control)</li></ul></div>
+      <div class="card"><h3>What the dashboard shows</h3><ul><li>Learner progress: active vs inactive, completion % by course</li><li>Completion rates across the institution</li><li>Certification status by learner and tier</li><li>Recertification status for the current calendar year</li><li>Seat utilization: assigned vs unassigned seats by tier</li><li>Specialization / upgrade history per learner</li></ul></div>
+    </div>
+    <div class="card ok g1"><h3>On-demand access — check anytime</h3><ul><li>Dashboard is available at any time — admins do not need to wait for a scheduled report</li><li>Admin is notified automatically by Badgr Pro each time a credential is issued for one of their learners</li><li>HubSpot is the primary data source — data is always current</li><li>Each admin sees only their institution's data, filtered by institution ID</li><li>Multiple admins can be designated per institution in HubSpot</li><li>Dashboard access is removed when the subscription lapses</li></ul></div>
+    <div class="sys"><span class="sc">HubSpot — primary data source</span><span class="sc">Looker Studio — on-demand dashboard</span><span class="sc">Badgr Pro — credential issuance notifications to admin</span><span class="sc">Canvas Career — completion data</span></div>
+  </div>
+  <div class="sp" id="p5s1">
+    <div class="g2">
+      <div class="card"><h3>Subscription & access policies</h3><ul><li>Learning access active for all assigned learners while subscription is current</li><li>Overdue accounts: automated lockout triggered by HubSpot workflow per defined thresholds</li><li>Scheduler access requires payment confirmed flag — available to institutional admin(s) with Instructor subscriptions; unlocked automatically</li><li>No partial payments supported. Refunds supported.</li><li>Seats can be reassigned — up to 20% of total licenses may be reallocated per subscription year</li><li>Reallocation beyond 20% requires a conversation with the Pivot rep</li><li>Training upgrades / specializations included in subscription — no additional cost</li></ul></div>
+      <div class="card"><h3>Certification policies</h3><ul><li>All learners must recertify once per calendar year — no individual expiration dates</li><li>Recertification is included in the subscription — no additional purchase</li><li>Annual content refresh content is part of recertification modules in Canvas</li><li>Lapsed certifications (not recertified within the calendar year) flagged in HubSpot and visible in Looker Studio</li><li>Lapsed credential holders cannot represent themselves as currently certified</li><li>Upgrades must be requested ahead of the recertification skills lab — not available on demand mid-year</li></ul></div>
+    </div>
+    <div class="g2">
+      <div class="card"><h3>Admin responsibilities</h3><ul><li>Assign all purchased seats within the subscription period</li><li>Manage seat reallocations within the 20% annual allowance</li><li>Submit upgrade requests to Pivot rep ahead of the recertification skills lab</li><li>Procure training mats from Pivot-preferred vendors before hosting a training</li><li>Coordinate scheduling for skills lab (Practitioner and Instructor tiers)</li><li>Monitor learner progress via the Looker Studio dashboard as needed</li><li>Notify Pivot of seat reassignments beyond the 20% threshold</li></ul></div>
+      <div class="card"><h3>Pivot's ongoing responsibilities</h3><ul><li>CSM monitors account health and reaches out proactively</li><li>Automated notifications sent to admins on each credential issuance</li><li>Annual content refresh published and pushed to active subscriptions</li><li>Physical curriculum manuals shipped to newly certified Instructors</li><li>HubSpot and Looker Studio kept current — data is always accurate</li><li>Preferred vendor list maintained and shared for training mat procurement</li></ul></div>
+    </div>
+  </div>
+</div>
+
+</div><!-- end wrap -->
+
+<script>
+function ph(n){
+  document.querySelectorAll('.pb').forEach((b,i)=>b.classList.toggle('on',i===n));
+  document.querySelectorAll('.pp').forEach((p,i)=>p.classList.toggle('on',i===n));
+}
+function st(phase,step){
+  const p=document.getElementById('ph'+phase);
+  p.querySelectorAll('.sb').forEach((b,i)=>b.classList.toggle('on',i===step));
+  p.querySelectorAll('.sp').forEach((s,i)=>s.classList.toggle('on',i===step));
+}
+</script>
+</body>
+</html>
