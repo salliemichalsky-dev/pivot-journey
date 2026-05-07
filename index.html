@@ -5,8 +5,31 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pivot Customer Journey</title>
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --navy: #283754;
+  --navy-mid: #3E4B65;
+  --navy-gray: #697387;
+  --navy-light: #BEC3CC;
+  --navy-tint: #E9EBEE;
+  --plum: #523C4C;
+  --plum-light: #CBC4C9;
+  --plum-tint: #EEEBED;
+  --teal: #507170;
+  --teal-light: #CAD4D4;
+  --teal-tint: #EDF1F1;
+  --orange: #C76C33;
+  --orange-deep: #B94700;
+  --orange-light: #F1DACC;
+  --orange-tint: #F7E9E0;
+  --ink: #283754;
+  --muted: #697387;
+  --paper: #FFFFFF;
+}
+
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#F7F8FA;color:#1A1A1A;padding:24px 16px;min-height:100vh}
+body{font-family:'Inter Tight',system-ui,sans-serif;background:#F4F4F2;color:#1A1A1A;padding:24px 16px;min-height:100vh}
 .header{max-width:1100px;margin:0 auto 24px;display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:12px}
 .header h1{font-size:20px;font-weight:600;color:#283754}
 .header p{font-size:12px;color:#777;margin-top:3px}
@@ -30,10 +53,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .phdr p{font-size:12px;color:#555;line-height:1.55}
 
 .srail{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
-.sb{padding:7px 16px;font-size:11px;font-weight:500;cursor:pointer;background:#fff;color:#444;border:1.5px solid #B0BBC8;border-radius:6px;white-space:nowrap;transition:background .12s,border-color .12s,color .12s,box-shadow .12s;box-shadow:0 1px 3px rgba(0,0,0,.08)}.sb:hover{background:#F0F4F8;border-color:#283754;color:#283754;box-shadow:0 2px 6px rgba(40,55,84,.14)}
+.sb{padding:7px 16px;font-size:11px;font-weight:500;cursor:pointer;background:#fff;color:#444;border:1.5px solid #BEC3CC;border-radius:6px;white-space:nowrap;transition:background .12s,border-color .12s,color .12s,box-shadow .12s;box-shadow:0 1px 3px rgba(0,0,0,.08)}.sb:hover{background:#F0F4F8;border-color:#283754;color:#283754;box-shadow:0 2px 6px rgba(26,43,74,.14)}
 
-.sb.on{background:#283754;color:#fff;border-color:#283754;border-radius:6px;box-shadow:0 2px 8px rgba(40,55,84,.25)}
+.sb.on{background:#283754;color:#fff;border-color:#283754;border-radius:6px;box-shadow:0 2px 8px rgba(26,43,74,.25)}
 .sp{display:none}.sp.on{display:block}
+.exp{display:none}.exp.on{display:block}
 
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
 .g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:10px}
@@ -41,46 +65,46 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .g1{margin-bottom:10px}
 
 .card{background:#fff;border:1px solid #DDE1E8;border-radius:10px;padding:12px 14px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
-.card h3{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:#999;margin-bottom:8px}
+.card h3{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:#697387;margin-bottom:8px}
 .card ul{list-style:none;display:flex;flex-direction:column;gap:6px}
 .card li{font-size:12px;color:#444;line-height:1.45;padding-left:12px;position:relative}
 .card li::before{content:'';position:absolute;left:0;top:7px;width:4px;height:4px;border-radius:50%;background:#CCC}
 
-.card.info{background:#EDF4FF;border-color:#B8D4F8}
-.card.info h3{color:#1D5FAA}.card.info li{color:#1D5FAA}.card.info li::before{background:#1D5FAA;opacity:.5}
-.card.ok{background:#EDFAF3;border-color:#8ED8B4}
-.card.ok h3{color:#0F6E45}.card.ok li{color:#0F6E45}.card.ok li::before{background:#0F6E45;opacity:.5}
-.card.warn{background:#FFF8E6;border-color:#F0D080}
-.card.warn h3{color:#8A5E00}.card.warn li{color:#8A5E00}.card.warn li::before{background:#8A5E00;opacity:.5}
-.card.purple{background:#F3F0FF;border-color:#C4B8F5}
-.card.purple h3{color:#4B35A8}.card.purple li{color:#4B35A8}.card.purple li::before{background:#4B35A8;opacity:.5}
-.card.orange{background:#FDF0E8;border-color:#E8BFA0}
-.card.orange h3{color:#8B3600}.card.orange li{color:#8B3600}.card.orange li::before{background:#8B3600;opacity:.5}
+.card.info{background:#EDF4FF;border-color:#B3D1DC}
+.card.info h3{color:#283754}.card.info li{color:#283754}.card.info li::before{background:#283754;opacity:.5}
+.card.ok{background:#EDF1F1;border-color:#CAD4D4}
+.card.ok h3{color:#507170}.card.ok li{color:#507170}.card.ok li::before{background:#507170;opacity:.5}
+.card.warn{background:#F7E9E0;border-color:#F0D080}
+.card.warn h3{color:#7A4A00}.card.warn li{color:#7A4A00}.card.warn li::before{background:#7A4A00;opacity:.5}
+.card.purple{background:#EEEBED;border-color:#CBC4C9}
+.card.purple h3{color:#523C4C}.card.purple li{color:#523C4C}.card.purple li::before{background:#523C4C;opacity:.5}
+.card.orange{background:#F7E9E0;border-color:#F1DACC}
+.card.orange h3{color:#C76C33}.card.orange li{color:#C76C33}.card.orange li::before{background:#C76C33;opacity:.5}
 
 .flow{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:12px}
-.fc{font-size:11px;font-weight:400;padding:3px 9px;border-radius:4px;background:#EEF1F5;border:none;color:#555;white-space:nowrap}
-.fc.ok{background:#EDFAF3;border-color:#8ED8B4;color:#0F6E45}
-.fc.inst{background:#FDF0E8;border-color:#E8BFA0;color:#8B3600}
-.fc.purple{background:#F3F0FF;border-color:#C4B8F5;color:#4B35A8}
+.fc{font-size:11px;font-weight:400;padding:3px 9px;border-radius:4px;background:#E9EBEE;border:none;color:#555;white-space:nowrap}
+.fc.ok{background:#EDF1F1;border-color:#CAD4D4;color:#507170}
+.fc.inst{background:#F7E9E0;border-color:#F1DACC;color:#C76C33}
+.fc.purple{background:#EEEBED;border-color:#CBC4C9;color:#523C4C}
 .fa{font-size:12px;color:#BBB}
 
-.gate{display:flex;align-items:flex-start;gap:9px;padding:9px 13px;border-radius:8px;background:#FFF8E6;border:1px solid #F0D080;margin-bottom:10px}
-.gate-dot{width:8px;height:8px;border-radius:50%;background:#B07A00;flex-shrink:0;margin-top:3px}
-.gate p{font-size:12px;color:#7A5500;line-height:1.5}
+.gate{display:flex;align-items:flex-start;gap:9px;padding:9px 13px;border-radius:8px;background:#F7E9E0;border:1px solid #F0D080;margin-bottom:10px}
+.gate-dot{width:8px;height:8px;border-radius:50%;background:#C76C33;flex-shrink:0;margin-top:3px}
+.gate p{font-size:12px;color:#C76C33;line-height:1.5}
 .gate strong{font-weight:600}
 
-.callout{display:flex;align-items:flex-start;gap:9px;padding:10px 14px;border-radius:8px;background:#F3F0FF;border:1px solid #C4B8F5;margin-bottom:10px}
-.callout-dot{width:8px;height:8px;border-radius:50%;background:#4B35A8;flex-shrink:0;margin-top:4px}
-.callout p{font-size:12px;color:#4B35A8;line-height:1.5}
+.callout{display:flex;align-items:flex-start;gap:9px;padding:10px 14px;border-radius:8px;background:#EEEBED;border:1px solid #CBC4C9;margin-bottom:10px}
+.callout-dot{width:8px;height:8px;border-radius:50%;background:#523C4C;flex-shrink:0;margin-top:4px}
+.callout p{font-size:12px;color:#523C4C;line-height:1.5}
 .callout strong{font-weight:600}
 
 .sys{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px}
-.sc{font-size:10px;padding:3px 8px;border-radius:3px;background:#E8EDF2;border:none;color:#546070;font-weight:500;letter-spacing:.01em}
+.sc{font-size:10px;padding:3px 8px;border-radius:3px;background:#E9EBEE;border:none;color:#3E4B65;font-weight:500;letter-spacing:.01em}
 
 .tier-pill{display:inline-block;font-size:9px;font-weight:600;padding:2px 7px;border-radius:3px;margin-left:4px;vertical-align:middle}
-.pill-all{background:#EEF1F5;color:#283754;border:1px solid #C5CDD9}
-.pill-pp{background:#EBF2F2;color:#2D5C5B;border:1px solid #A8C8C7}
-.pill-inst{background:#FDF0E8;color:#8B3600;border:1px solid #E8BFA0}
+.pill-all{background:#E9EBEE;color:#283754;border:1px solid #C5CDD9}
+.pill-pp{background:#EDF1F1;color:#2D5C5B;border:1px solid #A8C8C7}
+.pill-inst{background:#F7E9E0;color:#C76C33;border:1px solid #F1DACC}
 
 .mat-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:10px}
 .fork{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
@@ -95,34 +119,52 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 </head>
 <body>
 
-<div class="header">
-  <div>
-    <h1>Pivot Customer Journey</h1>
-    <p>Operational Customer Journey Map — From Quote to Ongoing Administration</p>
+<div style="background:#283754;padding:18px 28px 18px;display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;border-radius:10px;position:relative;overflow:hidden">
+  <div style="position:absolute;top:0;right:0;width:100px;height:100px;background:#C76C33;clip-path:polygon(100% 0,0 0,100% 100%);opacity:.18"></div>
+  <div style="display:flex;align-items:center;gap:20px">
+    <img src="data:image/png;base64,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" alt="Pivot Crisis Intervention" style="height:38px;width:auto;display:block">
+    <div style="width:1px;height:36px;background:rgba(255,255,255,.25)"></div>
+    <div>
+      <div style="font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#C76C33;margin-bottom:3px">Internal Reference</div>
+      <div style="font-size:17px;font-weight:700;color:#fff;letter-spacing:-.015em;line-height:1.2">Customer Journey Map</div>
+      <div style="font-size:11px;color:rgba(255,255,255,.65);margin-top:2px;font-weight:400">From quote to ongoing administration</div>
+    </div>
   </div>
-  <div class="meta">Internal reference · Confidential<br>Version 8 · May 2025</div>
+  <div style="text-align:right;font-size:10px;color:rgba(255,255,255,.5);font-weight:500;letter-spacing:.06em">CONFIDENTIAL<br>May 2025</div>
 </div>
 
 <div class="wrap">
 
 <div class="phase-rail">
-  <button class="pb on" onclick="ph(0)"><span class="pn">Phase 1</span>Quote & Payment<span class="bar" style="background:#378ADD"></span></button>
-  <button class="pb" onclick="ph(1)"><span class="pn">Phase 2</span>Access & Enrollment<span class="bar" style="background:#1D9E75"></span></button>
-  <button class="pb" onclick="ph(2)"><span class="pn">Phase 3</span>Scheduling<span class="bar" style="background:#BA7517"></span></button>
-  <button class="pb" onclick="ph(3)"><span class="pn">Phase 4</span>Learning Experience<span class="bar" style="background:#7F77DD"></span></button>
-  <button class="pb" onclick="ph(4)"><span class="pn">Phase 5</span>Certification & Recert<span class="bar" style="background:#D85A30"></span></button>
-  <button class="pb" onclick="ph(5)"><span class="pn">Phase 6</span>Policies &amp; Admin<span class="bar" style="background:#888780"></span></button>
+  <button class="pb on" onclick="ph(0)"><span class="pn">Phase 1</span>Quote & Payment<span class="bar" style="background:#283754"></span></button>
+  <button class="pb" onclick="ph(1)"><span class="pn">Phase 2</span>Access & Enrollment<span class="bar" style="background:#507170"></span></button>
+  <button class="pb" onclick="ph(2)"><span class="pn">Phase 3</span>Scheduling<span class="bar" style="background:#C76C33"></span></button>
+  <button class="pb" onclick="ph(3)"><span class="pn">Phase 4</span>Learning Experience<span class="bar" style="background:#523C4C"></span></button>
+  <button class="pb" onclick="ph(4)"><span class="pn">Phase 5</span>Certification & Recert<span class="bar" style="background:#C76C33"></span></button>
+  <button class="pb" onclick="ph(5)"><span class="pn">Phase 6</span>Policies &amp; Admin<span class="bar" style="background:#3E4B65"></span></button>
 </div>
 
 <!-- PHASE 1 -->
 <div class="pp on" id="ph0">
-  <div class="phdr"><div class="pbadge" style="background:#E6F1FB;color:#185FA5">01</div><div><h2>Quote & payment</h2><p>Customer contacts Pivot to request a quote. A rep builds it in HubSpot and sends a payment request. Customer pays by credit card, ACH, or PO/invoice. Learning access is not blocked by payment status — but scheduler access is gated until payment is confirmed.</p></div></div>
-  <span style="display:block;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:#999;margin-bottom:8px">Select a section:</span><div class="srail"><button class="sb on" onclick="st(0,0)">Request a quote</button><button class="sb" onclick="st(0,1)">Credit card / ACH</button><button class="sb" onclick="st(0,2)">PO / invoice</button><button class="sb" onclick="st(0,3)">Payment confirmation</button></div>
+  <!-- Customer type toggle -->
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;padding:12px 16px;background:#F4F4F2;border:1.5px solid #DDE1E8;border-radius:8px">
+    <span style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:#666;white-space:nowrap">Customer type:</span>
+    <div style="display:flex;gap:6px">
+      <button id="toggle-new" onclick="switchCustomer('new')" style="padding:6px 16px;font-size:11px;font-weight:600;border-radius:6px;border:1.5px solid #283754;background:#283754;color:#fff;cursor:pointer;transition:all .12s">New Customer</button>
+      <button id="toggle-existing" onclick="switchCustomer('existing')" style="padding:6px 16px;font-size:11px;font-weight:600;border-radius:6px;border:1.5px solid #BEC3CC;background:#fff;color:#555;cursor:pointer;transition:all .12s">Existing Pivot Customer</button>
+    </div>
+    <span id="customer-note" style="font-size:11px;color:#888;font-style:italic">Phases 2–6 are the same for both paths — once on the subscription, the experience is identical.</span>
+  </div>
+
+  <!-- NEW CUSTOMER CONTENT -->
+  <div id="new-customer-content">
+  <div class="phdr"><div class="pbadge" style="background:#E9EBEE;color:#283754">01</div><div><h2>Quote & payment — New Customer</h2><p>Customer contacts Pivot to request a quote. A rep builds it in HubSpot and sends a payment request. Customer pays by credit card, ACH, or PO/invoice. Learning access is not blocked by payment status — but scheduler access is gated until payment is confirmed.</p></div></div>
+  <span style="display:block;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:#697387;margin-bottom:8px">Select a section:</span><div class="srail"><button class="sb on" onclick="st(0,0)">Request a quote</button><button class="sb" onclick="st(0,1)">Credit card / ACH</button><button class="sb" onclick="st(0,2)">PO / invoice</button><button class="sb" onclick="st(0,3)">Payment confirmation</button></div>
   <div class="sp on" id="p0s0">
     <div class="flow"><span class="fc">Customer contacts Pivot</span><span class="fa">→</span><span class="fc">Rep reviews seat needs</span><span class="fa">→</span><span class="fc">Quote built in HubSpot</span><span class="fa">→</span><span class="fc">Quote sent to customer</span></div>
     <div class="g2">
       <div class="card"><h3>What the customer does</h3><ul><li>Reaches out to Pivot (email, web form, or existing contact)</li><li>Provides org name, number of staff, and desired certification tier(s)</li><li>Indicates payment method preference (CC, ACH, or PO)</li><li>Reviews quote and confirms</li></ul></div>
-      <div class="card"><h3>What Pivot does</h3><ul><li>Rep creates or locates the Company record in HubSpot</li><li>Confirms seat counts and license mix (Associate / Practitioner / Instructor)</li><li>Applies correct volume tier pricing automatically</li><li>Generates quote and sends via HubSpot</li></ul></div>
+      <div class="card"><h3>What Pivot does</h3><ul><li>Rep creates or locates the Company record in HubSpot</li><li>Confirms seat counts and license mix (Associate / Practitioner / Instructor)</li><li>Applies correct volume tier pricing automatically</li><li>Generates quote and sends via HubSpot</li><li>Customer signs subscription contract — annual payment date set to contract signing date</li><li>Quarterly payment options available — confirmed at signing</li></ul></div>
     </div>
     <div class="sys"><span class="sc">HubSpot — quote generation</span><span class="sc">HubSpot — company record</span></div>
     <div class="card info g1"><h3>What lives in HubSpot at this point</h3><ul><li>Company record created or updated</li><li>Subscription type, seat count, and license mix recorded</li><li>Quote attached to the deal</li><li>Payment method preference noted</li></ul></div>
@@ -135,6 +177,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
     </div>
     <div class="sys"><span class="sc">HubSpot — payment link + invoice</span><span class="sc">Authorize.net — CC/ACH processing</span><span class="sc">QuickBooks — accounting record</span></div>
     <div class="card ok g1"><h3>Access unlocked after CC/ACH payment</h3><ul><li>Subscription active = learning access on</li><li>Payment confirmed = scheduler access on (Practitioner and Instructor tiers)</li><li>Both flags set in HubSpot simultaneously</li></ul></div>
+    <div class="card info g1"><h3>New customer payment dates</h3><ul><li>Annual subscription payment date is set to the date of the original contract signing</li><li>Quarterly payment options are available — confirm preference at contract signing</li><li>All future annual renewals will bill on this same date each year</li></ul></div>
   </div>
   <div class="sp" id="p0s2">
     <div class="flow"><span class="fc">Customer submits PO</span><span class="fa">→</span><span class="fc">Rep records in HubSpot</span><span class="fa">→</span><span class="fc">Invoice generated</span><span class="fa">→</span><span class="fc">PO payment confirmed via HubSpot workflow</span></div>
@@ -154,17 +197,228 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
   </div>
 </div>
 
+  </div><!-- end new-customer-content -->
+
+  <!-- EXISTING Pivot CUSTOMER CONTENT -->
+  <div id="existing-customer-content" style="display:none">
+  <div class="phdr"><div class="pbadge" style="background:#EEEBED;color:#523C4C">01</div><div><h2>Pivot Subscription Transition</h2><p>Existing existing customers transitioning to Pivot are offered an incentive discount to switch to the Pivot subscription model immediately. All other existing customers are required to transition at their next recertification cycle. Once transitioned, the experience from Phase 2 onward is identical to a new customer.</p></div></div>
+  <span style="display:block;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:#697387;margin-bottom:8px">Select a section:</span>
+  <div class="srail">
+    <button class="sb on" onclick="stEx(0)">Outreach & offer</button>
+    <button class="sb" onclick="stEx(1)">Account review</button>
+    <button class="sb" onclick="stEx(2)">Cert mapping</button>
+    <button class="sb" onclick="stEx(3)">Quote & agreement</button>
+    <button class="sb" onclick="stEx(4)">Access & onboarding</button>
+  </div>
+
+  <div class="exp on" id="ex0">
+    <div class="flow"><span class="fc">CSM identifies existing Pivot account</span><span class="fa">→</span><span class="fc">Outreach sent</span><span class="fa">→</span><span class="fc">Transition offer presented</span><span class="fa">→</span><span class="fc">Customer elects immediate or at-recert transition</span></div>
+    <div class="g2">
+      <div class="card purple"><h3>Incentive offer — immediate transition</h3><ul><li>Existing existing customers transitioning to Pivot are offered a discount incentive to transition to the Pivot subscription model immediately rather than waiting for their recertification cycle</li><li>CSM presents the offer directly — outreach via email and follow-up call</li><li>Incentive pricing is reflected in the HubSpot quote</li><li>Customers who accept transition immediately: account is migrated, new subscription activated, legacy previous platform access is closed</li></ul></div>
+      <div class="card"><h3>Required transition — at recertification</h3><ul><li>Customers who do not accept the immediate offer are required to transition to the subscription model at their next recertification cycle</li><li>CSM documents the transition date in HubSpot based on the customer's previous recertification schedule</li><li>Customer continues on Pivot until that date — no disruption to active certifications</li><li>CSM re-engages 60 days before the recert date to begin the transition process</li></ul></div>
+    </div>
+    <div class="sys"><span class="sc">HubSpot — transition status and timeline on Company record</span><span class="sc">CSM — outreach and offer management</span></div>
+  </div>
+
+  <div class="exp" id="ex1">
+    <div class="flow"><span class="fc">Rep pulls Pivot account record</span><span class="fa">→</span><span class="fc">Determines recertification status for all users</span><span class="fa">→</span><span class="fc">Applies correct scenario pricing</span><span class="fa">→</span><span class="fc">Quote generated</span></div>
+
+    <div class="callout"><div class="callout-dot"></div><p><strong>Pricing depends on where users are in their certification cycle.</strong> Every existing customer falls into one of four scenarios — or a combination. The CSM reviews the Pivot account record and identifies which scenario applies before generating the quote.</p></div>
+
+    <div class="g2">
+      <div class="card ok">
+        <h3>Scenario 1 — All users recertified this year</h3>
+        <ul>
+          <li><strong>License cost:</strong> No Year 1 license cost — users are already certified for the current calendar year</li>
+          <li><strong>Implementation fee:</strong> Charged</li>
+          <li><strong>Instructor access:</strong> Instructors get access to new Pivot materials immediately upon transition</li>
+          <li><strong>Practitioner access:</strong> Practitioners gain access to new Pivot materials on January 1 when the subscription formally kicks in</li>
+          <li>Subscription renews at standard pricing at the start of the next calendar year</li>
+        </ul>
+      </div>
+      <div class="card warn">
+        <h3>Scenario 2A — No users recertified; seats purchased but unused</h3>
+        <ul>
+          <li><strong>License cost:</strong> Standard pricing</li>
+          <li><strong>Prorated discount:</strong> Applied based on time remaining in the calendar year</li>
+          <li><strong>Implementation fee:</strong> Charged</li>
+          <li><strong>Credit:</strong> Cost of unused previous licenses subtracted from the Pivot subscription invoice</li>
+          <li>Users begin the Pivot certification process upon transition — no recertification credit carried over</li>
+        </ul>
+      </div>
+    </div>
+    <div class="g2">
+      <div class="card warn">
+        <h3>Scenario 2B — No users recertified; seats not yet purchased</h3>
+        <ul>
+          <li><strong>License cost:</strong> Standard pricing</li>
+          <li><strong>Prorated discount:</strong> Applied based on time remaining in the calendar year</li>
+          <li><strong>Implementation fee:</strong> Charged</li>
+          <li>No credit applied — no prior Pivot payment to offset</li>
+          <li>Users begin the Pivot certification process upon transition</li>
+        </ul>
+      </div>
+      <div class="card" style="background:#E9EBEE;border-color:#BEC3CC">
+        <h3 style="color:#283754">Scenario 3 — Mixed: some recertified, some not</h3>
+        <ul>
+          <li><strong>Implementation fee:</strong> Charged</li>
+          <li><strong>Already recertified users:</strong> No Year 1 license cost</li>
+          <li><strong>Not yet recertified users:</strong> Standard pricing + prorated discount</li>
+          <li><strong>Credits:</strong> Applied for any unused Pivot seats</li>
+          <li><strong>Instructor access:</strong> All Instructors get access to new Pivot materials immediately</li>
+          <li><strong>Practitioners already certified:</strong> Access to new materials on January 1 when subscription costs kick in</li>
+          <li><strong>Practitioners not yet recertified:</strong> Access to new materials upon recertification</li>
+        </ul>
+      </div>
+    </div>
+    <div class="g2">
+      <div class="card purple">
+        <h3>Scenario 4 — Adding net new users</h3>
+        <ul>
+          <li>Applies when the organization wants to add staff who were not part of the Pivot account</li>
+          <li><strong>License cost:</strong> Standard pricing + prorated discount based on time remaining in the calendar year</li>
+          <li>Net new users begin the Pivot certification process from the start — no prior certification to honor</li>
+          <li>Can be added at transition or at any point during the subscription year</li>
+          <li>CSM generates a quote and payment link for net new seats</li>
+        </ul>
+      </div>
+      <div class="card info">
+        <h3>What the implementation fee covers</h3>
+        <ul>
+          <li>Account setup and migration of prior certification records to Pivot HubSpot</li>
+          <li>Certification mapping (prior certification tiers → Pivot tiers) — recorded on each Contact record</li>
+          <li>Catalog and Canvas provisioning</li>
+          <li>CSM kickoff call and Adoption Toolkit delivery</li>
+          <li>Charged once at transition regardless of scenario — not repeated at renewal</li>
+        </ul>
+      </div>
+    </div>
+
+    <div style="overflow-x:auto;margin-bottom:10px">
+      <table style="width:100%;font-size:11px;border-collapse:collapse;min-width:560px">
+        <thead>
+          <tr style="background:#283754">
+            <th style="padding:7px 10px;text-align:left;color:#fff;font-weight:600;border-right:1px solid #2D3E5A">Scenario</th>
+            <th style="padding:7px 10px;text-align:left;color:#fff;font-weight:600;border-right:1px solid #2D3E5A">License Cost Y1</th>
+            <th style="padding:7px 10px;text-align:left;color:#fff;font-weight:600;border-right:1px solid #2D3E5A">Prorated Discount</th>
+            <th style="padding:7px 10px;text-align:left;color:#fff;font-weight:600;border-right:1px solid #2D3E5A">Impl. Fee</th>
+            <th style="padding:7px 10px;text-align:left;color:#fff;font-weight:600;border-right:1px solid #2D3E5A">Credit</th>
+            <th style="padding:7px 10px;text-align:left;color:#fff;font-weight:600">Material Access</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="background:#EDF1F1">
+            <td style="padding:6px 10px;color:#283754;font-weight:600;border-right:1px solid #D0E4E8;border-bottom:1px solid #D0E4E8">All recertified this year</td>
+            <td style="padding:6px 10px;color:#507170;font-weight:600;border-right:1px solid #D0E4E8;border-bottom:1px solid #D0E4E8">None</td>
+            <td style="padding:6px 10px;color:#555;border-right:1px solid #D0E4E8;border-bottom:1px solid #D0E4E8">—</td>
+            <td style="padding:6px 10px;color:#555;border-right:1px solid #D0E4E8;border-bottom:1px solid #D0E4E8">Yes</td>
+            <td style="padding:6px 10px;color:#555;border-right:1px solid #D0E4E8;border-bottom:1px solid #D0E4E8">—</td>
+            <td style="padding:6px 10px;color:#555;border-bottom:1px solid #D0E4E8">Instructors: immediate · Practitioners: Jan 1</td>
+          </tr>
+          <tr style="background:#fff">
+            <td style="padding:6px 10px;color:#283754;font-weight:600;border-right:1px solid #E9EBEE;border-bottom:1px solid #E9EBEE">None recertified — seats purchased</td>
+            <td style="padding:6px 10px;color:#555;border-right:1px solid #E9EBEE;border-bottom:1px solid #E9EBEE">Standard</td>
+            <td style="padding:6px 10px;color:#507170;font-weight:600;border-right:1px solid #E9EBEE;border-bottom:1px solid #E9EBEE">Yes</td>
+            <td style="padding:6px 10px;color:#555;border-right:1px solid #E9EBEE;border-bottom:1px solid #E9EBEE">Yes</td>
+            <td style="padding:6px 10px;color:#507170;font-weight:600;border-right:1px solid #E9EBEE;border-bottom:1px solid #E9EBEE">Unused licenses</td>
+            <td style="padding:6px 10px;color:#555;border-bottom:1px solid #E9EBEE">Upon certification in Pivot</td>
+          </tr>
+          <tr style="background:#E9EBEE">
+            <td style="padding:6px 10px;color:#283754;font-weight:600;border-right:1px solid #E9EBEE;border-bottom:1px solid #E9EBEE">None recertified — no seats purchased</td>
+            <td style="padding:6px 10px;color:#555;border-right:1px solid #E9EBEE;border-bottom:1px solid #E9EBEE">Standard</td>
+            <td style="padding:6px 10px;color:#507170;font-weight:600;border-right:1px solid #E9EBEE;border-bottom:1px solid #E9EBEE">Yes</td>
+            <td style="padding:6px 10px;color:#555;border-right:1px solid #E9EBEE;border-bottom:1px solid #E9EBEE">Yes</td>
+            <td style="padding:6px 10px;color:#555;border-right:1px solid #E9EBEE;border-bottom:1px solid #E9EBEE">—</td>
+            <td style="padding:6px 10px;color:#555;border-bottom:1px solid #E9EBEE">Upon certification in Pivot</td>
+          </tr>
+          <tr style="background:#fff">
+            <td style="padding:6px 10px;color:#283754;font-weight:600;border-right:1px solid #E9EBEE;border-bottom:1px solid #E9EBEE">Mixed — some recertified, some not</td>
+            <td style="padding:6px 10px;color:#555;border-right:1px solid #E9EBEE;border-bottom:1px solid #E9EBEE">Standard for uncertified</td>
+            <td style="padding:6px 10px;color:#507170;font-weight:600;border-right:1px solid #E9EBEE;border-bottom:1px solid #E9EBEE">Yes (uncertified)</td>
+            <td style="padding:6px 10px;color:#555;border-right:1px solid #E9EBEE;border-bottom:1px solid #E9EBEE">Yes</td>
+            <td style="padding:6px 10px;color:#507170;font-weight:600;border-right:1px solid #E9EBEE;border-bottom:1px solid #E9EBEE">Unused seats</td>
+            <td style="padding:6px 10px;color:#555;border-bottom:1px solid #E9EBEE">Instructors: immediate · Practitioners vary by status</td>
+          </tr>
+          <tr style="background:#E9EBEE">
+            <td style="padding:6px 10px;color:#523C4C;font-weight:600;border-right:1px solid #E9EBEE">Adding net new users</td>
+            <td style="padding:6px 10px;color:#555;border-right:1px solid #E9EBEE">Standard</td>
+            <td style="padding:6px 10px;color:#507170;font-weight:600;border-right:1px solid #E9EBEE">Yes</td>
+            <td style="padding:6px 10px;color:#555;border-right:1px solid #E9EBEE">—</td>
+            <td style="padding:6px 10px;color:#555;border-right:1px solid #E9EBEE">—</td>
+            <td style="padding:6px 10px;color:#555">Upon certification in Pivot</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="sys"><span class="sc">HubSpot — Pivot account record + cert status per user</span><span class="sc">CSM — scenario identification + quote</span><span class="sc">Authorize.net — payment</span></div>
+  </div>
+
+  <div class="exp" id="ex2">
+    <div class="flow"><span class="fc">prior cert levels identified</span><span class="fa">→</span><span class="fc">Mapped to Pivot tiers</span><span class="fa">→</span><span class="fc">Mapping shared with customer</span><span class="fa">→</span><span class="fc">Confirmed in HubSpot</span></div>
+    <div class="g2">
+      <div class="card"><h3>Practitioner mapping</h3>
+        <table style="width:100%;font-size:11px;border-collapse:collapse;margin-top:4px">
+          <tr style="background:#E9EBEE"><th style="padding:5px 8px;text-align:left;font-weight:600;color:#283754;border-bottom:1px solid #DDE1E8">Pivot Level</th><th style="padding:5px 8px;text-align:left;font-weight:600;color:#283754;border-bottom:1px solid #DDE1E8">Pivot Tier</th></tr>
+          <tr><td style="padding:5px 8px;color:#444;border-bottom:1px solid #E9EBEE">Basic Practitioner</td><td style="padding:5px 8px;font-weight:500;color:#283754;border-bottom:1px solid #E9EBEE">Associate</td></tr>
+          <tr style="background:#F7F8FA"><td style="padding:5px 8px;color:#444;border-bottom:1px solid #E9EBEE">Basic Practitioner Plus</td><td style="padding:5px 8px;font-weight:500;color:#283754;border-bottom:1px solid #E9EBEE">Practitioner Essential</td></tr>
+          <tr><td style="padding:5px 8px;color:#444;border-bottom:1px solid #E9EBEE">Practitioner</td><td style="padding:5px 8px;font-weight:500;color:#283754;border-bottom:1px solid #E9EBEE">Practitioner Core</td></tr>
+          <tr style="background:#F7F8FA"><td style="padding:5px 8px;color:#444;border-bottom:1px solid #E9EBEE">Practitioner 1</td><td style="padding:5px 8px;font-weight:500;color:#283754;border-bottom:1px solid #E9EBEE">Practitioner Core</td></tr>
+          <tr><td style="padding:5px 8px;color:#444;border-bottom:1px solid #E9EBEE">Practitioner 2 P</td><td style="padding:5px 8px;font-weight:500;color:#283754;border-bottom:1px solid #E9EBEE">Practitioner Advanced</td></tr>
+          <tr style="background:#F7F8FA"><td style="padding:5px 8px;color:#444;border-bottom:1px solid #E9EBEE">Practitioner 2 S</td><td style="padding:5px 8px;font-weight:500;color:#283754;border-bottom:1px solid #E9EBEE">Practitioner Advanced</td></tr>
+          <tr><td style="padding:5px 8px;color:#444">Practitioner 2 PS</td><td style="padding:5px 8px;font-weight:500;color:#283754">Practitioner Advanced</td></tr>
+        </table>
+      </div>
+      <div class="card"><h3>Instructor mapping</h3>
+        <table style="width:100%;font-size:11px;border-collapse:collapse;margin-top:4px">
+          <tr style="background:#E9EBEE"><th style="padding:5px 8px;text-align:left;font-weight:600;color:#283754;border-bottom:1px solid #DDE1E8">Pivot Level</th><th style="padding:5px 8px;text-align:left;font-weight:600;color:#283754;border-bottom:1px solid #DDE1E8">Pivot Tier</th></tr>
+          <tr><td style="padding:5px 8px;color:#444;border-bottom:1px solid #E9EBEE">Instructor V</td><td style="padding:5px 8px;font-weight:500;color:#283754;border-bottom:1px solid #E9EBEE">Instructor Core</td></tr>
+          <tr style="background:#F7F8FA"><td style="padding:5px 8px;color:#444;border-bottom:1px solid #E9EBEE">Instructor P</td><td style="padding:5px 8px;font-weight:500;color:#283754;border-bottom:1px solid #E9EBEE">Instructor Advanced</td></tr>
+          <tr><td style="padding:5px 8px;color:#444;border-bottom:1px solid #E9EBEE">Instructor S</td><td style="padding:5px 8px;font-weight:500;color:#283754;border-bottom:1px solid #E9EBEE">Instructor Advanced</td></tr>
+          <tr style="background:#F7F8FA"><td style="padding:5px 8px;color:#444">Instructor PS</td><td style="padding:5px 8px;font-weight:500;color:#283754">Instructor Advanced</td></tr>
+        </table>
+        <p style="font-size:11px;color:#777;margin-top:8px;font-style:italic">Mapping is performed by Pivot — no action required from the customer. Mapped tiers are shared with the customer for confirmation before the subscription is activated.</p>
+      </div>
+    </div>
+    <div class="callout"><div class="callout-dot"></div><p><strong>No one gets downgraded.</strong> The mapping is designed to honor the level of training each individual has completed. All prior certifications in good standing are recognized and mapped to the closest equivalent Pivot tier.</p></div>
+    <div class="sys"><span class="sc">HubSpot — cert mapping recorded on Contact records</span><span class="sc">CSM — mapping review and customer confirmation</span></div>
+  </div>
+
+  <div class="exp" id="ex3">
+    <div class="flow"><span class="fc">Cert mapping confirmed</span><span class="fa">→</span><span class="fc">Subscription quote generated</span><span class="fa">→</span><span class="fc">Incentive discount applied (if immediate)</span><span class="fa">→</span><span class="fc">Agreement signed</span><span class="fa">→</span><span class="fc">Payment processed</span></div>
+    <div class="g2">
+      <div class="card"><h3>Quote generation</h3><ul><li>Rep generates a subscription quote in HubSpot based on the confirmed seat count and license mix from the cert mapping</li><li>License mix reflects the mapped Pivot tiers — not the old prior certification level count</li><li>Volume pricing applied automatically based on total seat count</li><li>Incentive discount applied to the quote if the customer is transitioning immediately</li><li>Payment link sent via HubSpot — CC/ACH or PO/invoice per the customer's preference</li></ul></div>
+      <div class="card ok"><h3>What's included — value framing</h3><ul><li>Annual recertifications included — no separate purchase as under the previous POS model</li><li>Annual content refresh included — previously a separate cost event</li><li>Access to the hybrid learning model (online + skills lab) — not available under the previous model</li><li>Adoption Toolkit and CSM support included — new to the subscription</li><li>Simplified 3-tier structure replaces the previous 7-level system</li></ul></div>
+    </div>
+    <div class="g2">
+      <div class="card"><h3>Subscription contract</h3><ul><li>Customer signs the Pivot subscription contract — replaces any existing previous training agreement</li><li>Contract covers: subscription terms, certification scope, annual recertification cadence, and payment schedule</li><li>Transition date confirmed — previous platform access is closed on this date</li><li>Signed contract recorded in HubSpot on the Company record</li><li>Pro-rated current year cost is paid upon contract signing</li><li>Annual subscription payment date is set to the contract signing date going forward</li><li>Quarterly payment options are available — CSM confirms preference at signing</li></ul></div>
+      <div class="card warn"><h3>Communicating the pricing change</h3><ul><li>The subscription model replaces per-certification and per-recertification purchases — the total annual cost may look different but includes significantly more</li><li>CSM should prepare a side-by-side cost comparison for customers who push back on price</li><li>Key talking point: under the previous model, recerts were a separate annual cost on top of certification fees — under Pivot subscription, everything is one annual fee</li></ul></div>
+    </div>
+    <div class="sys"><span class="sc">HubSpot — quote + agreement on Company record</span><span class="sc">Authorize.net — payment processing</span><span class="sc">QuickBooks — accounting sync</span></div>
+  </div>
+
+  <div class="exp" id="ex4">
+    <div class="flow"><span class="fc">Payment confirmed</span><span class="fa">→</span><span class="fc">previous platform access closed</span><span class="fa">→</span><span class="fc">Pivot subscription activated</span><span class="fa">→</span><span class="fc">Admin designated</span><span class="fa">→</span><span class="fc">CSM kickoff + Adoption Toolkit</span><span class="fa">→</span><span class="fc">Catalog + Canvas provisioned</span></div>
+    <div class="g2">
+      <div class="card ok"><h3>Activation</h3><ul><li>Once payment is confirmed, the Pivot subscription is activated in HubSpot</li><li>previous platform access is closed on the agreed transition date</li><li>Institutional admin(s) are designated in HubSpot — may be the same contact as the Pivot account manager</li><li>Catalog access provisioned — seat pool reflects the confirmed license mix from the mapping</li><li>Institutional admin(s) begin assigning seats; Canvas access granted to learners immediately on assignment</li></ul></div>
+      <div class="card"><h3>CSM kickoff — existing customers</h3><ul><li>CSM schedules a kickoff call with the institutional admin(s) — even for existing customers, the subscription platform is new and the kickoff is valuable</li><li>Kickoff covers: what's changed (platform, model, certification tiers), walkthrough of Catalog and Canvas, skills lab scheduling overview for Instructor-tier subscribers</li><li>Institutional admin(s) receive the <a href="https://drive.google.com/drive/folders/1PeTPLNIyLYiSNlaBOzokWlu1hbZUURqH?usp=drive_link" target="_blank" style="color:#507170;font-weight:600;text-decoration:underline">Pivot Adoption Toolkit</a> — particularly valuable for change management given staff are used to the old point-of-sale model</li><li>From this point, the customer journey is identical to a new customer — Phases 2–6 apply in full</li></ul></div>
+    </div>
+    <div class="sys"><span class="sc">HubSpot — subscription activated, Pivot record closed</span><span class="sc">Catalog — seat pool provisioned</span><span class="sc">Canvas Career — learner access on seat assignment</span><span class="sc">CSM — kickoff + Adoption Toolkit</span></div>
+  </div>
+
+  </div><!-- end existing-customer-content -->
 <!-- PHASE 2 -->
 <div class="pp" id="ph1">
-  <div class="phdr"><div class="pbadge" style="background:#E1F5EE;color:#0F6E56">02</div><div><h2>Access & enrollment</h2><p>Once payment is confirmed and the subscription is active, a CSM kickoff call is scheduled and the training agreement is signed. The institutional admin(s) then gain access to Catalog for seat management. Assigning a seat in Catalog immediately grants that learner access to their Canvas Career curriculum — no additional step required.</p></div></div>
-  <span style="display:block;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:#999;margin-bottom:8px">Select a section:</span><div class="srail"><button class="sb on" onclick="st(1,0)">CSM kickoff</button><button class="sb" onclick="st(1,1)">Admin setup</button><button class="sb" onclick="st(1,2)">Seat management</button><button class="sb" onclick="st(1,3)">Learner enrollment</button><button class="sb" onclick="st(1,4)">Canvas access</button></div>
+  <div class="phdr"><div class="pbadge" style="background:#EDF1F1;color:#507170">02</div><div><h2>Access & enrollment</h2><p>Once payment is confirmed and the subscription is active, a CSM kickoff call is scheduled and the training agreement is signed. The institutional admin(s) then gain access to Catalog for seat management. Assigning a seat in Catalog immediately grants that learner access to their Canvas Career curriculum — no additional step required.</p></div></div>
+  <span style="display:block;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:#697387;margin-bottom:8px">Select a section:</span><div class="srail"><button class="sb on" onclick="st(1,0)">CSM kickoff</button><button class="sb" onclick="st(1,1)">Admin setup</button><button class="sb" onclick="st(1,2)">Seat management</button><button class="sb" onclick="st(1,3)">Learner enrollment</button><button class="sb" onclick="st(1,4)">Canvas access</button><button class="sb" onclick="st(1,5)">Additional seats</button></div>
   <div class="sp on" id="p1s0">
     <div class="flow"><span class="fc">Payment confirmed</span><span class="fa">→</span><span class="fc">Training agreement signed</span><span class="fa">→</span><span class="fc">CSM kickoff call scheduled</span><span class="fa">→</span><span class="fc">Institutional admin(s) onboarded</span></div>
     <div class="g2">
       <div class="card ok"><h3>Training agreement</h3><ul><li>Institutional admin(s) review and sign the Pivot training agreement before access is provisioned</li><li>Agreement covers: scope of certification, permitted use of materials, compliance obligations, and recertification requirements</li><li>Signed agreement recorded in HubSpot on the Company record</li><li>Access to Catalog and Canvas is provisioned after agreement is signed</li></ul></div>
-      <div class="card ok"><h3>CSM kickoff call</h3><ul><li>CSM schedules a kickoff call with the institutional admin(s) after agreement is signed</li><li>Kickoff covers: platform walkthrough, seat assignment process, skills lab scheduling overview, and key contacts</li><li>CSM confirms the admin understands their responsibilities before the cohort is launched</li><li>Any Instructor-tier subscribers are briefed on the Host a Training / Join a Training paths and training agreement for hosting</li></ul></div>
+      <div class="card ok"><h3>CSM kickoff call</h3><ul><li>CSM schedules a kickoff call with the institutional admin(s) after agreement is signed</li><li>Kickoff covers: platform walkthrough, seat assignment process, skills lab scheduling overview, and key contacts</li><li>Institutional admin(s) receive the <a href="https://drive.google.com/drive/folders/1PeTPLNIyLYiSNlaBOzokWlu1hbZUURqH?usp=drive_link" target="_blank" style="color:#507170;font-weight:600;text-decoration:underline">Pivot Adoption Toolkit</a> during the kickoff call</li><li>CSM confirms the admin understands their responsibilities before the cohort is launched</li><li>Any Instructor-tier subscribers are briefed on the Host a Training / Join a Training paths and training agreement for hosting</li></ul></div>
     </div>
-    <div class="sys"><span class="sc">HubSpot — training agreement on Company record</span><span class="sc">HubSpot — CSM assignment</span></div>
+    <div class="card g1"><h3><a href="https://drive.google.com/drive/folders/1PeTPLNIyLYiSNlaBOzokWlu1hbZUURqH?usp=drive_link" target="_blank" style="color:#3E4B65;text-decoration:none;border-bottom:1.5px solid #BEC3CC">Adoption Toolkit ↗</a></h3><ul><li>Provided to institutional admin(s) during the CSM kickoff call — <a href="https://drive.google.com/drive/folders/1PeTPLNIyLYiSNlaBOzokWlu1hbZUURqH?usp=drive_link" target="_blank" style="color:#555;text-decoration:underline">open in Google Drive ↗</a></li><li><strong>Best practices:</strong> guidance on how to roll out PCM training effectively across the organization</li><li><strong>Measuring success:</strong> frameworks for tracking the impact of PCM — including staff confidence, incident reduction, and certification completion rates</li><li><strong>Change management:</strong> tools and strategies to support deep adoption, overcome staff resistance, and build sustained engagement with the program</li><li>Toolkit is designed to help admins champion the program internally and demonstrate ROI to leadership</li></ul></div>
+    <div class="sys"><span class="sc">HubSpot — training agreement on Company record</span><span class="sc">HubSpot — CSM assignment</span><span class="sc">Adoption Toolkit — delivered at kickoff</span></div>
   </div>
   <div class="sp" id="p1s1">
     <div class="flow"><span class="fc">Subscription active in HubSpot</span><span class="fa">→</span><span class="fc">Admin designated in HubSpot</span><span class="fa">→</span><span class="fc">Admin access to Catalog granted</span></div>
@@ -177,9 +431,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
   <div class="sp" id="p1s2">
     <div class="flow"><span class="fc">Admin logs into Catalog</span><span class="fa">→</span><span class="fc">Assigns seat to staff member</span><span class="fa">→</span><span class="fc">Canvas access granted immediately</span><span class="fa">→</span><span class="fc">Enrollment recorded in HubSpot</span></div>
     <div class="g2">
-      <div class="card"><h3>Seat assignment process</h3><ul><li>Admin enters staff name and email in Catalog</li><li>Admin selects the appropriate license type for each person</li><li>Seat assignment recorded in Catalog and synced to HubSpot</li><li>Assigning the seat <strong style="color:#0F6E45">immediately grants the learner access</strong> to their Canvas Career curriculum</li></ul></div>
+      <div class="card"><h3>Seat assignment process</h3><ul><li>Admin enters staff name and email in Catalog</li><li>Admin selects the appropriate license type for each person</li><li>Seat assignment recorded in Catalog and synced to HubSpot</li><li>Assigning the seat <strong style="color:#507170">immediately grants the learner access</strong> to their Canvas Career curriculum</li></ul></div>
       <div class="card warn"><h3>Seat reallocation policy</h3><ul><li>Customers may reallocate up to <strong>20% of their total licenses</strong> per subscription year to accommodate staff turnover</li><li>Example: 50-seat subscription allows up to 10 seat reallocations per year</li><li>Reallocation releases the seat from the original learner and assigns it to a new one</li><li>Original learner's enrollment and progress are ended at point of reallocation</li><li>Reallocation beyond 20% requires a conversation with the Pivot rep</li></ul></div>
     </div>
+    <div class="card info g1"><h3>Need more seats?</h3><ul><li>If purchased seats are insufficient, institutional admin(s) can request additional seats at any time by contacting their CSM</li><li>See the Additional Seats tab for the full process</li></ul></div>
     <div class="sys"><span class="sc">Catalog — seat management UI</span><span class="sc">HubSpot — seat allocations + reallocation tracking</span><span class="sc">Canvas Career — immediate access on assignment</span></div>
   </div>
   <div class="sp" id="p1s3">
@@ -189,6 +444,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
       <div class="card"><h3>What gets created in HubSpot</h3><ul><li>Certification enrollment record linked to the learner contact</li><li>Enrollment date, license type, and assigned institution recorded</li><li>Certification status set to "In Progress"</li><li>Completion data pushed from Badgr Pro to HubSpot automatically on credential award</li></ul></div>
     </div>
     <div class="sys"><span class="sc">Catalog — program enrollment trigger</span><span class="sc">Canvas Career — user creation + course access</span><span class="sc">HubSpot — enrollment record</span></div>
+  </div>
+  <div class="sp" id="p1s5">
+    <div class="flow"><span class="fc">Admin identifies need for additional seats</span><span class="fa">→</span><span class="fc">Contacts CSM</span><span class="fa">→</span><span class="fc">CSM generates quote + payment link</span><span class="fa">→</span><span class="fc">Payment processed</span><span class="fa">→</span><span class="fc">New seats added to subscription</span></div>
+    <div class="g2">
+      <div class="card"><h3>How to request additional seats</h3><ul><li>Institutional admin(s) reach out to their CSM when additional seats are needed</li><li>Additional seats can be requested at any point during the subscription year — not limited to renewal</li><li>Admin specifies the number of seats and license type(s) needed (Associate / Practitioner / Instructor)</li><li>CSM generates a quote and payment link via HubSpot</li><li>Volume pricing applies — if the additional seats push the total into a higher volume tier, the lower per-seat rate applies to the new seats</li></ul></div>
+      <div class="card"><h3>What happens after payment</h3><ul><li>Payment processed via Authorize.net (CC/ACH) or PO/invoice per the institution's preferred method</li><li>HubSpot subscription record updated with the additional seat count</li><li>New seats immediately available in Catalog for the institutional admin(s) to assign</li><li>Seat assignments trigger Canvas access for new learners as normal</li><li>Additional seats are prorated for the remainder of the subscription year</li></ul></div>
+    </div>
+    <div class="sys"><span class="sc">CSM — quote and payment link via HubSpot</span><span class="sc">Authorize.net — payment processing</span><span class="sc">HubSpot — subscription record update</span><span class="sc">Catalog — new seats available for assignment</span></div>
   </div>
   <div class="sp" id="p1s4">
     <div class="g2">
@@ -201,8 +464,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 
 <!-- PHASE 3 -->
 <div class="pp" id="ph2">
-  <div class="phdr"><div class="pbadge" style="background:#FAEEDA;color:#633806">03</div><div><h2>Scheduling the skills lab</h2><p>After payment is confirmed, institutional admin(s) with an Instructor subscription gain access to the scheduling tool. Associates and Practitioners do not perform any scheduling — their participation is arranged by the institutional admin(s). Two paths: host a training at your own location, or join an existing nearby training.</p></div></div>
-  <span style="display:block;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:#999;margin-bottom:8px">Select a section:</span><div class="srail"><button class="sb on" onclick="st(2,0)">Scheduler access</button><button class="sb" onclick="st(2,1)">Path A: Host a training</button><button class="sb" onclick="st(2,2)">Path B: Join a training</button><button class="sb" onclick="st(2,3)">Training event model</button><button class="sb" onclick="st(2,4)">Materials</button></div>
+  <div class="phdr"><div class="pbadge" style="background:#FAEEDA;color:#C76C33">03</div><div><h2>Scheduling the skills lab</h2><p>After payment is confirmed, institutional admin(s) with an Instructor subscription gain access to the scheduling tool. Associates and Practitioners do not perform any scheduling — their participation is arranged by the institutional admin(s). Two paths: host a training at your own location, or join an existing nearby training.</p></div></div>
+  <span style="display:block;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:#697387;margin-bottom:8px">Select a section:</span><div class="srail"><button class="sb on" onclick="st(2,0)">Scheduler access</button><button class="sb" onclick="st(2,1)">Path A: Host a training</button><button class="sb" onclick="st(2,2)">Path B: Join a training</button><button class="sb" onclick="st(2,3)">Training event model</button><button class="sb" onclick="st(2,4)">Materials</button></div>
   <div class="sp on" id="p2s0">
     <div class="gate"><div class="gate-dot"></div><p><strong>Access gate:</strong> Scheduling is only accessible to institutional admin(s) with an Instructor tier in their subscription. Associates and Practitioners do not perform any scheduling activities — their participation in the skills lab is arranged by the institutional admin(s) on their behalf.</p></div>
     <div class="g2">
@@ -213,7 +476,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
   <div class="sp" id="p2s1">
     <div class="flow"><span class="fc">Admin selects "Host a Training"</span><span class="fa">→</span><span class="fc">Chooses 3-day window</span><span class="fa">→</span><span class="fc">Trainer availability checked</span><span class="fa">→</span><span class="fc">Event created in HubSpot</span><span class="fa">→</span><span class="fc">Synced to Google Calendar</span><span class="fa">→</span><span class="fc">Opened to nearby orgs</span></div>
     <div class="g2">
-      <div class="card"><h3>What the institutional admin(s) do</h3><ul><li>Accesses scheduling tool (payment confirmed gate cleared)</li><li>Signs the hosting training agreement before the event is confirmed</li><li>Selects "Host a Training" and provides venue details</li><li>Views calendar showing valid trainer availability windows</li><li>Selects preferred 3-day window from available options</li><li>Registers all attendees (Associates, Practitioners, and Instructors) into the event in HubSpot — Catalog is not used for event scheduling</li><li>Can request the event be marked private if at least 10 people are registered — private events are not visible to nearby institutions</li></ul></div>
+      <div class="card"><h3>What the institutional admin(s) do</h3><ul><li>Accesses scheduling tool (payment confirmed gate cleared)</li><li>Signs the Training Site Agreement before the event is confirmed — this is a separate agreement from the subscription contract, specific to the physical training location and event</li><li>Selects "Host a Training" and provides venue details</li><li>Views calendar showing valid trainer availability windows</li><li>Selects preferred 3-day window from available options</li><li>Registers all attendees (Associates, Practitioners, and Instructors) into the event in HubSpot — Catalog is not used for event scheduling</li><li>Can request the event be marked private if at least 10 people are registered — private events are not visible to nearby institutions</li></ul></div>
       <div class="card"><h3>What happens in the system</h3><ul><li>Custom API validates trainer availability against Google Calendar</li><li>Training Event object created in HubSpot with all details</li><li>Event synced to Google Calendar for the assigned trainer</li><li>Event marked as "Open / Shared" by default — or "Private" if requested and 10+ registrants are confirmed</li><li>Capacity tracked in HubSpot — no Catalog involvement in event scheduling</li></ul></div>
     </div>
     <div class="sys"><span class="sc">HubSpot — Training Event object</span><span class="sc">Google Calendar — trainer scheduling</span><span class="sc">Custom API — availability validation</span></div>
@@ -228,7 +491,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
   </div>
   <div class="sp" id="p2s3">
     <div class="g2">
-      <div class="card info"><h3>Training Event object (HubSpot)</h3><ul><li>Event type: Hosted or Open/Shared or Private (if 10+ registered and privacy requested)</li><li>Host institution and location</li><li>Hosting training agreement signed — recorded on event</li><li>Assigned trainer — 3-day training window</li><li>Total capacity and registered attendees</li><li>Participating institutions</li><li>Nearby/open or private availability status</li><li>Event status (Scheduled / In Progress / Complete)</li></ul></div>
+      <div class="card info"><h3>Training Event object (HubSpot)</h3><ul><li>Event type: Hosted or Open/Shared or Private (if 10+ registered and privacy requested)</li><li>Host institution and location</li><li>Training Site Agreement signed — separate from subscription contract, specific to the training location and event; recorded on the Training Event in HubSpot</li><li>Assigned trainer — 3-day training window</li><li>Total capacity and registered attendees</li><li>Participating institutions</li><li>Nearby/open or private availability status</li><li>Event status (Scheduled / In Progress / Complete)</li></ul></div>
       <div class="card"><h3>System roles</h3><ul><li>HubSpot: source of truth for all event records, seat assignments, and status</li><li>Google Calendar: trainer availability engine and calendar execution</li><li>Custom APIs: validate availability, create events, sync between HubSpot and Google Calendar</li><li>Catalog: seat management — not event scheduling</li></ul></div>
     </div>
   </div>
@@ -244,8 +507,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 
 <!-- PHASE 4 -->
 <div class="pp" id="ph3">
-  <div class="phdr"><div class="pbadge" style="background:#EEEDFE;color:#3C3489">04</div><div><h2>Learning experience</h2><p>Learners complete their assigned Catalog program in Canvas. Badgr Pro awards the certificate and badge automatically when all Catalog program requirements are met — no manual step. Data pushes to HubSpot. Associates certify online only. Practitioners and Instructors also attend a skills lab.</p></div></div>
-  <span style="display:block;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:#999;margin-bottom:8px">Select a section:</span><div class="srail"><button class="sb on" onclick="st(3,0)">Canvas curriculum</button><button class="sb" onclick="st(3,1)">Course structure</button><button class="sb" onclick="st(3,2)">Tier requirements</button><button class="sb" onclick="st(3,3)">Skills lab</button><button class="sb" onclick="st(3,4)">Certificate & badge</button></div>
+  <div class="phdr"><div class="pbadge" style="background:#EEEBED;color:#523C4C">04</div><div><h2>Learning experience</h2><p>Learners complete their assigned Catalog program in Canvas. Badgr Pro awards the certificate and badge automatically when all Catalog program requirements are met — no manual step. Data pushes to HubSpot. Associates certify online only. Practitioners and Instructors also attend a skills lab.</p></div></div>
+  <span style="display:block;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:#697387;margin-bottom:8px">Select a section:</span><div class="srail"><button class="sb on" onclick="st(3,0)">Canvas curriculum</button><button class="sb" onclick="st(3,1)">Course structure</button><button class="sb" onclick="st(3,2)">Tier requirements</button><button class="sb" onclick="st(3,3)">Skills lab</button><button class="sb" onclick="st(3,4)">Certificate & badge</button></div>
   <div class="sp on" id="p3s0">
     <div class="flow"><span class="fc">Seat assigned → enrolled in Catalog program</span><span class="fa">→</span><span class="fc">Completes Canvas curriculum</span><span class="fa">→</span><span class="fc ok">All program requirements met → Badgr Pro awards credential automatically</span></div>
     <div class="g2">
@@ -256,7 +519,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
   </div>
   <div class="sp" id="p3s1">
     <div class="g3">
-      <div class="card info"><h3>PCM Foundations</h3><p style="font-size:11px;color:#1D5FAA;margin-bottom:8px">Required for all. Assessments embedded.</p><div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px"><span class="tier-pill pill-all">Associate</span><span class="tier-pill pill-pp">Practitioner</span><span class="tier-pill pill-inst">Instructor</span></div><ul><li>PCM definition of crisis and behavior framework</li><li>Cycle of crisis and prevention strategies</li><li>De-escalation and non-physical interactions</li><li>Reintegration principles</li></ul></div>
+      <div class="card info"><h3>PCM Foundations</h3><p style="font-size:11px;color:#283754;margin-bottom:8px">Required for all. Assessments embedded.</p><div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px"><span class="tier-pill pill-all">Associate</span><span class="tier-pill pill-pp">Practitioner</span><span class="tier-pill pill-inst">Instructor</span></div><ul><li>PCM definition of crisis and behavior framework</li><li>Cycle of crisis and prevention strategies</li><li>De-escalation and non-physical interactions</li><li>Reintegration principles</li></ul></div>
       <div class="card"><h3>Physical Interventions</h3><p style="font-size:11px;color:#666;margin-bottom:8px">Practitioners and Instructors only</p><div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px"><span class="tier-pill pill-pp">Practitioner</span><span class="tier-pill pill-inst">Instructor</span></div><ul><li>Physical safety techniques</li><li>Transportation and immobilization procedures</li><li>Vertical and horizontal holding protocols</li><li>Criteria for use of physical intervention</li></ul></div>
       <div class="card"><h3>Instructor Standards & QA</h3><p style="font-size:11px;color:#666;margin-bottom:8px">Instructors only — Standards completed before skills lab; QA unlocked after skills lab pass</p><div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px"><span class="tier-pill pill-inst">Instructor</span></div><ul><li>Course delivery standards and sequence</li><li>Classroom size limitations and surrogate use</li><li>Documentation and submission procedures</li><li>QA section unlocked when Instructor marks skills lab passed in gradebook</li><li>QA standards, certification validity, revocation criteria</li><li>Recordkeeping and compliance obligations</li></ul></div>
     </div>
@@ -294,8 +557,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 
 <!-- PHASE 5 -->
 <div class="pp" id="ph4">
-  <div class="phdr"><div class="pbadge" style="background:#FAECE7;color:#712B13">05</div><div><h2>Certification record & recertification</h2><p>All certifications are tied to the calendar year — not individual expiration dates. Every learner must recertify once per calendar year regardless of when they originally certified. Recertification is included in the subscription. Learners complete recertification modules in Canvas; Practitioners and Instructors also attend a skills lab. Specialization upgrades are requested here and assessed at the recertification skills lab.</p></div></div>
-  <span style="display:block;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:#999;margin-bottom:8px">Select a section:</span><div class="srail"><button class="sb on" onclick="st(4,0)">Certification record</button><button class="sb" onclick="st(4,1)">Calendar year model</button><button class="sb" onclick="st(4,2)">Recertification process</button><button class="sb" onclick="st(4,3)">What's stored where</button><button class="sb" onclick="st(4,4)">Upgrades & specializations</button></div>
+  <div class="phdr"><div class="pbadge" style="background:#F7E9E0;color:#C76C33">05</div><div><h2>Certification record & recertification</h2><p>All certifications are tied to the calendar year — not individual expiration dates. Every learner must recertify once per calendar year regardless of when they originally certified. Recertification is included in the subscription. Learners complete recertification modules in Canvas; Practitioners and Instructors also attend a skills lab. Specialization upgrades are requested here and assessed at the recertification skills lab.</p></div></div>
+  <span style="display:block;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:#697387;margin-bottom:8px">Select a section:</span><div class="srail"><button class="sb on" onclick="st(4,0)">Certification record</button><button class="sb" onclick="st(4,1)">Calendar year model</button><button class="sb" onclick="st(4,2)">Recertification process</button><button class="sb" onclick="st(4,3)">What's stored where</button><button class="sb" onclick="st(4,4)">Upgrades & specializations</button><button class="sb" onclick="st(4,5)">Partner Instructor</button></div>
   <div class="sp on" id="p4s0">
     <div class="g2">
       <div class="card info"><h3>HubSpot certification record</h3><ul><li>Certification enrollment linked to the learner Contact record</li><li>Institution (Company) association maintained</li><li>Certification tier: Associate, Practitioner, or Instructor</li><li>Status: In Progress / Certified / Recertification Due / Lapsed</li><li>Credential issue date recorded</li><li>Current certification year tracked</li><li>Training Event linked (Practitioners and Instructors)</li><li>Badgr Pro credential ID referenced</li><li>Any upgrade/specialization history</li></ul></div>
@@ -343,12 +606,104 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
     </div>
     <div class="sys"><span class="sc">HubSpot — upgrade request on learner record</span><span class="sc">Canvas Career — upgrade modules + gradebook</span><span class="sc">Catalog — updated program requirements</span><span class="sc">Badgr Pro — updated credential + admin notification</span><span class="sc">HubSpot — record via Badgr Pro push</span></div>
   </div>
+
+  <div class="sp" id="p4s5">
+    <div class="callout"><div class="callout-dot"></div><p><strong>Partner Instructors are approved to certify Practitioners domestically and internationally.</strong> They teach PCM independently across multiple organizations and are listed in the Pivot Partner Instructor Directory. All licenses must still be purchased through Pivot. Available after standard Instructor certification is achieved.</p></div>
+    <div class="g2">
+      <div class="card" style="background:#F7E9E0;border-color:#F1DACC">
+        <h3 style="color:#C76C33">What a Partner Instructor can do</h3>
+        <ul style="color:#B94700">
+          <li>Certify Practitioners domestically and internationally — not limited to a single institution</li>
+          <li>Purchase Practitioner licenses from Pivot for the individuals they train</li>
+          <li>Be added to another institution's Pivot account to facilitate courses on behalf of that institution</li>
+          <li>Listed in the Pivot Partner Instructor Directory — organizations can find and engage them directly</li>
+          <li>Still teaching official PCM curriculum under all Pivot certification and quality standards</li>
+          <li>Must purchase all licenses through Pivot — no independent licensing or self-certification</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Two operating models</h3>
+        <ul>
+          <li><strong>Independent practice:</strong> Partner Instructor purchases Practitioner licenses from Pivot for the individuals they train — operating as their own training entity</li>
+          <li><strong>Guest facilitator:</strong> Partner Instructor is added to an institution's Pivot account to facilitate courses for that institution's staff — the institution holds the subscription and seat licenses</li>
+          <li>Both models can be used by the same Partner Instructor — not mutually exclusive</li>
+          <li>All license purchases go through Pivot in both models</li>
+        </ul>
+      </div>
+    </div>
+    <div class="fork-label">Two paths to Partner Instructor status</div>
+    <div class="fork">
+      <div class="card ok">
+        <h3>Path A — Existing certified Instructor</h3>
+        <ul>
+          <li>Must hold an active Pivot Instructor credential in the current calendar year</li>
+          <li>No additional training required — Partner tier is an administrative add-on</li>
+          <li>Pay the Partner Instructor fee: <strong>$100 one-time implementation fee</strong></li>
+          <li>Covers: account setup, subaccount provisioning, and directory listing</li>
+          <li>CSM processes the application and provisions the Partner subaccount</li>
+          <li>Directory listing goes live on the Pivot Partner Instructor Directory</li>
+        </ul>
+      </div>
+      <div class="card" style="background:#F7E9E0;border-color:#F1DACC">
+        <h3 style="color:#C76C33">Path B — Practitioner or new user</h3>
+        <ul style="color:#B94700">
+          <li>Complete standard Instructor certification first — see Tier Requirements tab for the full process</li>
+          <li>Instructor License fee: separate flat fee (contact CSM for pricing) — covers Instructor Catalog program, Canvas access, and skills lab</li>
+          <li>Once Instructor credential is awarded by Badgr Pro, add the Partner tier</li>
+          <li>Pay the Partner Instructor fee: <strong>$100 one-time implementation fee</strong></li>
+          <li>CSM processes the application and provisions the Partner subaccount</li>
+          <li>Directory listing goes live on the Pivot Partner Instructor Directory</li>
+        </ul>
+      </div>
+    </div>
+    <div class="g2">
+      <div class="card info">
+        <h3>Partner Instructor Directory</h3>
+        <ul>
+          <li>Public listing on the Pivot website — searchable by organizations and individuals finding a certified trainer</li>
+          <li>Listing includes: name, geographic region, contact information, and active certification status</li>
+          <li>Active as long as Instructor credential is current and in good standing</li>
+          <li>Marked inactive if credential lapses — reinstated automatically after recertification</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Purchasing licenses as a Partner Instructor</h3>
+        <ul>
+          <li>Partner Instructors purchase Practitioner licenses directly from Pivot for the individuals they train</li>
+          <li>Standard subscription pricing applies — volume tiers apply</li>
+          <li>CSM generates a quote and payment link for each license purchase</li>
+          <li>Learners certified under a Partner Instructor receive their Badgr Pro credential as normal</li>
+          <li>All certifications tracked in Pivot's system regardless of who facilitated the training</li>
+        </ul>
+      </div>
+    </div>
+    <div class="g2">
+      <div class="card">
+        <h3>Being added to an institution's account</h3>
+        <ul>
+          <li>An institution can request a Partner Instructor be added to their Pivot account as a guest facilitator</li>
+          <li>The Partner Instructor facilitates courses for that institution's staff — the institution holds the subscription and seat licenses</li>
+          <li>CSM coordinates the account linkage in HubSpot</li>
+          <li>The Partner Instructor's own subaccount remains separate and independent</li>
+        </ul>
+      </div>
+      <div class="card warn">
+        <h3>Existing customers</h3>
+        <ul>
+          <li>Must hold an active Pivot subscription before pursuing the Partner Instructor path</li>
+          <li>Once on subscription: follow Path A (existing Instructor level) or Path B (Practitioner level)</li>
+          <li>CSM flags Partner Instructor interest during the transition conversation where applicable</li>
+        </ul>
+      </div>
+    </div>
+    <div class="sys"><span class="sc">HubSpot — Partner Instructor subaccount</span><span class="sc">Pivot website — Partner Instructor Directory</span><span class="sc">Catalog — license purchases</span><span class="sc">Badgr Pro — credential (same process)</span><span class="sc">CSM — application + account setup</span></div>
+  </div>
 </div>
 
 <!-- PHASE 6 — POLICIES & ADMIN (renumbered from ph6 to ph5) -->
 <div class="pp" id="ph5">
-  <div class="phdr"><div class="pbadge" style="background:#F1EFE8;color:#444441">06</div><div><h2>Policies & administration</h2><p>Institutions have on-demand access to their Looker Studio dashboard to view certification status, seat utilization, and learner progress at any time. Admins are notified automatically when credentials are issued. The policies below govern subscriptions, certifications, and admin responsibilities throughout the year.</p></div></div>
-  <span style="display:block;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:#999;margin-bottom:8px">Select a section:</span><div class="srail"><button class="sb on" onclick="st(5,0)">Looker Studio dashboard</button><button class="sb" onclick="st(5,1)">Policies</button></div>
+  <div class="phdr"><div class="pbadge" style="background:#E9EBEE;color:#3E4B65">06</div><div><h2>Policies & administration</h2><p>Institutions have on-demand access to their Looker Studio dashboard to view certification status, seat utilization, and learner progress at any time. Admins are notified automatically when credentials are issued. The policies below govern subscriptions, certifications, and admin responsibilities throughout the year.</p></div></div>
+  <span style="display:block;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:#697387;margin-bottom:8px">Select a section:</span><div class="srail"><button class="sb on" onclick="st(5,0)">Looker Studio dashboard</button><button class="sb" onclick="st(5,1)">Policies</button></div>
   <div class="sp on" id="p5s0">
     <div class="flow"><span class="fc">Institution created in HubSpot</span><span class="fa">→</span><span class="fc">Unique institution ID assigned</span><span class="fa">→</span><span class="fc">Looker Studio dashboard auto-provisioned</span><span class="fa">→</span><span class="fc">Admin receives access</span></div>
     <div class="g2">
@@ -360,7 +715,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
   </div>
   <div class="sp" id="p5s1">
     <div class="g2">
-      <div class="card"><h3>Subscription & access policies</h3><ul><li>Learning access active for all assigned learners while subscription is current</li><li>Overdue accounts: automated lockout triggered by HubSpot workflow per defined thresholds</li><li>Scheduler access requires payment confirmed flag — available to institutional admin(s) with Instructor subscriptions; unlocked automatically</li><li>No partial payments supported. Refunds supported.</li><li>Seats can be reassigned — up to 20% of total licenses may be reallocated per subscription year</li><li>Reallocation beyond 20% requires a conversation with the Pivot rep</li><li>Training upgrades / specializations included in subscription — no additional cost</li></ul></div>
+      <div class="card"><h3>Subscription & access policies</h3><ul><li>Learning access active for all assigned learners while subscription is current</li><li>Overdue accounts: automated lockout triggered by HubSpot workflow per defined thresholds</li><li>Scheduler access requires payment confirmed flag — available to institutional admin(s) with Instructor subscriptions; unlocked automatically</li><li>No partial payments supported. Refunds supported.</li><li>Seats can be reassigned — up to 20% of total licenses may be reallocated per subscription year</li><li>Reallocation beyond 20% requires a conversation with the Pivot rep</li><li>Training upgrades / specializations included in subscription — no additional cost</li><li>Additional seats can be purchased mid-year — contact CSM for a quote and payment link; prorated for the remainder of the subscription year</li></ul></div>
       <div class="card"><h3>Certification policies</h3><ul><li>All learners must recertify once per calendar year — no individual expiration dates</li><li>Recertification is included in the subscription — no additional purchase</li><li>Annual content refresh content is part of recertification modules in Canvas</li><li>Lapsed certifications (not recertified within the calendar year) flagged in HubSpot and visible in Looker Studio</li><li>Lapsed credential holders cannot represent themselves as currently certified</li><li>Upgrades must be requested ahead of the recertification skills lab — not available on demand mid-year</li></ul></div>
     </div>
     <div class="g2">
@@ -379,8 +734,34 @@ function ph(n){
 }
 function st(phase,step){
   const p=document.getElementById('ph'+phase);
-  p.querySelectorAll('.sb').forEach((b,i)=>b.classList.toggle('on',i===step));
-  p.querySelectorAll('.sp').forEach((s,i)=>s.classList.toggle('on',i===step));
+  // Scope buttons to the first .srail only (not nested srails inside content panels)
+  const rail=p.querySelector('.srail');
+  if(rail) rail.querySelectorAll('.sb').forEach((b,i)=>b.classList.toggle('on',i===step));
+  // Select panels by ID pattern: p{phase}s0, p{phase}s1, etc.
+  let i=0;
+  while(true){
+    const panel=document.getElementById('p'+phase+'s'+i);
+    if(!panel) break;
+    panel.classList.toggle('on',i===step);
+    i++;
+  }
+}
+function switchCustomer(type){
+  const isNew = type === 'new';
+  document.getElementById('new-customer-content').style.display = isNew ? 'block' : 'none';
+  document.getElementById('existing-customer-content').style.display = isNew ? 'none' : 'block';
+  const btnNew = document.getElementById('toggle-new');
+  const btnEx = document.getElementById('toggle-existing');
+  btnNew.style.background = isNew ? '#283754' : '#fff';
+  btnNew.style.color = isNew ? '#fff' : '#555';
+  btnNew.style.borderColor = isNew ? '#283754' : '#BEC3CC';
+  btnEx.style.background = isNew ? '#fff' : '#283754';
+  btnEx.style.color = isNew ? '#555' : '#fff';
+  btnEx.style.borderColor = isNew ? '#BEC3CC' : '#283754';
+}
+function stEx(step){
+  document.querySelectorAll('.exp').forEach((s,i)=>s.classList.toggle('on',i===step));
+  document.querySelectorAll('#existing-customer-content .sb').forEach((b,i)=>b.classList.toggle('on',i===step));
 }
 </script>
 </body>
